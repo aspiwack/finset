@@ -1,0 +1,16 @@
+# files produced by emacs
+*~
+# files produced by Coq
+*.glob
+*.vo
+*.v.d
+Makefile.bak
+# files produces by OCaml
+*.cmi
+*.cmt
+*.cmo
+*.cmx
+*.cmxs
+*.ml.d
+*.ml4.d
+*.o
