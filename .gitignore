@@ -1,9 +1,11 @@
 # files produced by emacs
 *~
 # files produced by Coq
+*.aux
 *.glob
 *.vo
 *.v.d
+.coq-native
 Makefile.bak
 # files produces by OCaml
 *.cmi
