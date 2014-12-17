@@ -9,7 +9,7 @@ Require Coq.Logic.ConstructiveEpsilon.
 Require Import FinSet.Lib.DProp.
 Import Coq.Classes.Morphisms.
 
-(** {6 A [DProp] interface} *)
+(** * A [DProp] interface *)
 
 Section Choice.
 
@@ -38,7 +38,7 @@ End Choice.
 Arguments choose_spec A to_nat of_nat retract P h : clear implicits.
 
 
-(** {6 [choose] is extensional} *)
+(** * [choose] is extensional *)
 
 Lemma linear_search_ext : forall P P_dec Q Q_dec n w v, (forall x, P x <-> Q x) ->
          proj1_sig (ConstructiveEpsilon.linear_search P P_dec n w) =

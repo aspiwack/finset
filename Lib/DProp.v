@@ -11,7 +11,7 @@ Record DProp := {
 }.
 Arguments contradictory {_} _ _.
 
-(** {6 Basic properties and tactics} *)
+(** * Basic properties and tactics *)
 
 Lemma denies_spec : forall (A:DProp), Denies A <-> ~A.
 Proof.
@@ -43,7 +43,7 @@ Notation dec_lift p := (match p return _ with left h => left _ | right n => righ
 (** [DProp] are decidable propositions in the usual sense. *)
 Program Definition dec_alt (P:DProp) : {P}+{~P} := dec_lift (dec P).
 
-(** {6 Equality} *)
+(** * Equality *)
 
 (** In a decidable proposition, the [dec] field is "proof irrelevant"
     if the propositions are. In particular if equivalent proposition
@@ -86,7 +86,7 @@ Proof.
 Qed.
 
 
-(** {6 Connectives} *)
+(** * Connectives *)
 
 Program Definition DTrue : DProp := {|
   Holds := True ;
@@ -121,7 +121,7 @@ Proof.
 Qed.
 
 
-(** {6 Proof irrelevance} *)
+(** * Proof irrelevance *)
 
 (** [DProp]-s are not proof irrelevant in general (they are if all
     propositions are proof irrelevant). But there is an equivalent
@@ -144,7 +144,7 @@ Proof.
   + intros [].
 Qed.
 
-(** {6 Booleans} *)
+(** * Booleans *)
 
 (** An alternative coercion from booleans to proposition with respect
     to those in the standard library ([if b then True else False] and
