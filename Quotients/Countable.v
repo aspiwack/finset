@@ -18,6 +18,7 @@
     to be used in a real program, where some control will be
     needed. *)
 
+Require Import DProp.
 Require FinSet.Lib.CEExt.
 Require Import FinSet.Quotients.Retract.
 Require Import Coq.NArith.NArith.
@@ -48,11 +49,34 @@ Qed.
 Program Definition countable_of_retract {A B} {_:Countable A} (r:Retract A B) : Countable B :=
   Retract.compose countable (Retract.opt_lift r).
 
-(** In some more advanced cases, we may need [B] to be lifted to provide a default element. *)
+(** In some more advanced cases, we may need [B] to be lifted to
+    provide a default element. *)
 Program Definition countable_of_opt_retract
         {A B} {_:Countable A} (r:Retract A (option B)) : Countable B :=
   Retract.opt_compose countable r.
 
+(** Countable types have decidable equality: it is sufficient to test
+    the equality of their code. *)
+Program Definition countable_eq_dec {A} {_:Countable A} (x y:A) : {x=y}+{x<>y} :=
+  dec_lift (
+      PeanoNat.Nat.eq_dec
+        (countable.(inj) (Some x))
+        (countable.(inj) (Some y)))
+.
+Next Obligation.
+  intros * h.
+  apply f_equal with (f:=countable.(proj)) in h.
+  rewrite !retract in h.
+  congruence.
+Qed.
+Next Obligation.
+  intros * h.
+  congruence.
+Qed.
+
+Program Definition eq_countable {A} {_:Countable A} (x y:A) : DProp := {|
+  dec := countable_eq_dec x y
+|}.
 
 (** * Inhabited instances *)
 
@@ -187,8 +211,6 @@ Qed.
     liting is not quite the identity because of the extra [option] in
     the definition of countable types. *)
 
-Import DProp.
-
 (** The main ingredient of the lifting is a lifting of (decidable)
     predicate to the option type, such that [{x:A|P x}] is isomorphic
     to [{x:option A|Liftp P x}]. *)
@@ -272,10 +294,9 @@ Section ChoiceExt.
    apply CEExt.choose_ext. all:unfold respectful.
    all: eauto.
    congruence.
-   { intros [x|] [y|] [=]. all:subst;cbn.
+   { intros [x|] [y|] [=]. all:subst;cbn in hP|-*.
      + eauto.
-     + unfold eq_dprop. cbn.
-       tauto. }
+     + tauto. }
  Qed.
 
 End ChoiceExt.

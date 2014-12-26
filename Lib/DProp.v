@@ -61,6 +61,7 @@ Qed.
     equivalence of the [Holds] field (equivalently, of the [Denies]
     field). *)
 Definition eq_dprop : DProp -> DProp -> Prop := iff.
+Arguments eq_dprop P Q /.
 
 Instance eq_dprop_eq : Equivalence eq_dprop.
 Proof.
@@ -72,6 +73,29 @@ Proof.
     symmetry. assumption.
   + intros x y z h₁ h₂.
     etransitivity. all:eassumption.
+Qed.
+
+
+(** The rewrite tactics needs some instances defined to work properly
+    with strongly decidable propositions as drop-in replacement of
+    regular propositions. Following the setoid rewrite library in
+    [Coq.Classes.RelationClasses], there should be a series of lemma,
+    but as part of this library, we shall be content with the case of
+    equivalence relations (which is derived from more basic lemmas in
+    the case of regular propositions). *)
+Instance dprop_proper A (R:A->A->DProp) (_:Equivalence R) :
+  Proper (R ==> R ==> eq_dprop) R.
+Proof.
+  intros x y h₁ z w h₂. unfold eq_dprop.
+  split.
+  + intros h₃.
+    etransitivity.
+    * symmetry; eassumption.
+    * etransitivity. all:eassumption.
+  + intros h₃.
+    etransitivity.
+    * eassumption.
+    * etransitivity. all:[>|symmetry]. all:eassumption.
 Qed.
 
 Instance holds_proper : Proper (eq_dprop==>iff) Holds.
