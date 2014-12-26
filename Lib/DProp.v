@@ -210,3 +210,18 @@ Defined.
 Arguments dprop_of_bool_obligation_1 _ /.
 
 Coercion dprop_of_bool : bool >-> DProp.
+
+(** * Tactics *)
+
+(** [ddecide t h] simplifies a decidable proposition using its
+    decision procedure. Fails if [t] doesn't evaluate to a
+    value. Creates an hypothesis named [h] with the statement that the
+    decision proved. *)
+Ltac ddecide t h :=
+  let t' := constr:(dec t) in
+  let t'' := eval cbn in t' in
+  match t'' with
+  | left ?p => pose proof p as h
+  | right ?n => pose proof n as h
+  end
+.

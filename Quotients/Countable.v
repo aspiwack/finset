@@ -18,10 +18,11 @@
     to be used in a real program, where some control will be
     needed. *)
 
+Require Import Coq.Classes.RelationClasses.
+Require Import Coq.NArith.NArith.
 Require Import DProp.
 Require FinSet.Lib.CEExt.
 Require Import FinSet.Quotients.Retract.
-Require Import Coq.NArith.NArith.
 
 Import List.ListNotations.
 Local Open Scope list_scope.
@@ -77,6 +78,9 @@ Qed.
 Program Definition eq_countable {A} {_:Countable A} (x y:A) : DProp := {|
   dec := countable_eq_dec x y
 |}.
+
+Instance eq_countable_eq {A} {_:Countable A} : Equivalence eq_countable.
+Proof eq_equivalence.
 
 (** * Inhabited instances *)
 
