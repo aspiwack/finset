@@ -6,6 +6,8 @@
 *.vo
 *.v.d
 .coq-native
+# coqdoc output
+html
 Makefile.bak
 # files produces by OCaml
 *.cmi
