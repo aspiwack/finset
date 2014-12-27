@@ -1,0 +1,128 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
+"http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<link href="coqdoc.css" rel="stylesheet" type="text/css" />
+<title>FinSet.Lib.CEExt</title>
+</head>
+
+<body>
+
+<div id="page">
+
+<div id="header">
+</div>
+
+<div id="main">
+
+<h1 class="libtitle">Library FinSet.Lib.CEExt</h1>
+
+<div class="code">
+</div>
+
+<div class="doc">
+This file contains extensions of the <span class="inlinecode"><span class="id" title="library">ConstructiveEpsilon</span></span> library
+    of Coq. Primarily, this is about supporting the <span class="inlinecode"><a class="idref" href="FinSet.Lib.DProp.html#DProp"><span class="id" title="record">DProp</span></a></span> library
+    instead of explicit usage of <span class="inlinecode"><span class="id" title="var">sumbool</span></span>. In addition this files
+    provides additional lemmas about <span class="inlinecode"><span class="id" title="library">ConstructiveEpsilon</span></span>, in
+    particular the extensionality of the choice procedure. 
+</div>
+<div class="code">
+
+<br/>
+<span class="id" title="keyword">Require</span> <a class="idref" href="http://coq.inria.fr/distrib/trunk/stdlib/Coq.Logic.ConstructiveEpsilon.html#"><span class="id" title="library">Coq.Logic.ConstructiveEpsilon</span></a>.<br/>
+<span class="id" title="keyword">Require</span> <span class="id" title="keyword">Import</span> <a class="idref" href="FinSet.Lib.DProp.html#"><span class="id" title="library">FinSet.Lib.DProp</span></a>.<br/>
+<span class="id" title="keyword">Import</span> <span class="id" title="var">Coq.Classes.Morphisms</span>.<br/>
+
+<br/>
+</div>
+
+<div class="doc">
+<a name="lab33"></a><h1 class="section">A <span class="inlinecode"><a class="idref" href="FinSet.Lib.DProp.html#DProp"><span class="id" title="record">DProp</span></a></span> interface</h1>
+
+</div>
+<div class="code">
+
+<br/>
+<span class="id" title="keyword">Section</span> <a name="Choice"><span class="id" title="section">Choice</span></a>.<br/>
+
+<br/>
+<span class="id" title="keyword">Context</span> {<span class="id" title="var">A</span>:<span class="id" title="keyword">Type</span>} (<span class="id" title="var">to_nat</span>:<a class="idref" href="FinSet.Lib.CEExt.html#A"><span class="id" title="variable">A</span></a><a class="idref" href="http://coq.inria.fr/distrib/trunk/stdlib/Coq.Init.Logic.html#d43e996736952df71ebeeae74d10a287"><span class="id" title="notation">→</span></a><a class="idref" href="http://coq.inria.fr/distrib/trunk/stdlib/Coq.Init.Datatypes.html#nat"><span class="id" title="inductive">nat</span></a>) (<span class="id" title="var">of_nat</span>:<a class="idref" href="http://coq.inria.fr/distrib/trunk/stdlib/Coq.Init.Datatypes.html#nat"><span class="id" title="inductive">nat</span></a><a class="idref" href="http://coq.inria.fr/distrib/trunk/stdlib/Coq.Init.Logic.html#d43e996736952df71ebeeae74d10a287"><span class="id" title="notation">→</span></a><a class="idref" href="FinSet.Lib.CEExt.html#A"><span class="id" title="variable">A</span></a>).<br/>
+<span class="id" title="keyword">Context</span> (<span class="id" title="var">retract</span>:<span class="id" title="keyword">∀</span> <span class="id" title="var">x</span>, <a class="idref" href="FinSet.Lib.CEExt.html#Choice.of_nat"><span class="id" title="variable">of_nat</span></a>(<a class="idref" href="FinSet.Lib.CEExt.html#Choice.to_nat"><span class="id" title="variable">to_nat</span></a> <a class="idref" href="FinSet.Lib.CEExt.html#x"><span class="id" title="variable">x</span></a>) <a class="idref" href="http://coq.inria.fr/distrib/trunk/stdlib/Coq.Init.Logic.html#1c39bf18749e5cc609e83c0a0ba5a372"><span class="id" title="notation">=</span></a> <a class="idref" href="FinSet.Lib.CEExt.html#x"><span class="id" title="variable">x</span></a>).<br/>
+<span class="id" title="keyword">Context</span>(<span class="id" title="var">P</span>:<a class="idref" href="FinSet.Lib.CEExt.html#Choice.A"><span class="id" title="variable">A</span></a><a class="idref" href="http://coq.inria.fr/distrib/trunk/stdlib/Coq.Init.Logic.html#d43e996736952df71ebeeae74d10a287"><span class="id" title="notation">→</span></a><a class="idref" href="FinSet.Lib.DProp.html#DProp"><span class="id" title="record">DProp</span></a>).<br/>
+
+<br/>
+</div>
+
+<div class="doc">
+Indefinite description for inhabited countable types. 
+</div>
+<div class="code">
+<span class="id" title="keyword">Definition</span> <a name="choice"><span class="id" title="definition">choice</span></a> : <a class="idref" href="http://coq.inria.fr/distrib/trunk/stdlib/Coq.Init.Logic.html#d43e996736952df71ebeeae74d10a287"><span class="id" title="notation">(</span></a><a class="idref" href="http://coq.inria.fr/distrib/trunk/stdlib/Coq.Init.Logic.html#84eb6d2849dbf3581b1c0c05add5f2d8"><span class="id" title="notation">∃</span></a> <span class="id" title="var">x</span><a class="idref" href="http://coq.inria.fr/distrib/trunk/stdlib/Coq.Init.Logic.html#84eb6d2849dbf3581b1c0c05add5f2d8"><span class="id" title="notation">,</span></a> <a class="idref" href="FinSet.Lib.CEExt.html#Choice.P"><span class="id" title="variable">P</span></a> <a class="idref" href="FinSet.Lib.CEExt.html#x"><span class="id" title="variable">x</span></a><a class="idref" href="http://coq.inria.fr/distrib/trunk/stdlib/Coq.Init.Logic.html#d43e996736952df71ebeeae74d10a287"><span class="id" title="notation">)</span></a> <a class="idref" href="http://coq.inria.fr/distrib/trunk/stdlib/Coq.Init.Logic.html#d43e996736952df71ebeeae74d10a287"><span class="id" title="notation">→</span></a> <a class="idref" href="http://coq.inria.fr/distrib/trunk/stdlib/Coq.Init.Specif.html#72ca3fac4636a1b19c963b12162882cf"><span class="id" title="notation">{</span></a> <span class="id" title="var">x</span><a class="idref" href="http://coq.inria.fr/distrib/trunk/stdlib/Coq.Init.Specif.html#72ca3fac4636a1b19c963b12162882cf"><span class="id" title="notation">:</span></a><a class="idref" href="FinSet.Lib.CEExt.html#Choice.A"><span class="id" title="variable">A</span></a> <a class="idref" href="http://coq.inria.fr/distrib/trunk/stdlib/Coq.Init.Specif.html#72ca3fac4636a1b19c963b12162882cf"><span class="id" title="notation">|</span></a> <a class="idref" href="FinSet.Lib.CEExt.html#Choice.P"><span class="id" title="variable">P</span></a> <span class="id" title="var">x</span> <a class="idref" href="http://coq.inria.fr/distrib/trunk/stdlib/Coq.Init.Specif.html#72ca3fac4636a1b19c963b12162882cf"><span class="id" title="notation">}</span></a> :=<br/>
+&nbsp;&nbsp;<a class="idref" href="http://coq.inria.fr/distrib/trunk/stdlib/Coq.Logic.ConstructiveEpsilon.html#constructive_indefinite_ground_description"><span class="id" title="lemma">ConstructiveEpsilon.constructive_indefinite_ground_description</span></a><br/>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<a class="idref" href="FinSet.Lib.CEExt.html#Choice.A"><span class="id" title="variable">A</span></a> <a class="idref" href="FinSet.Lib.CEExt.html#Choice.to_nat"><span class="id" title="variable">to_nat</span></a> <a class="idref" href="FinSet.Lib.CEExt.html#Choice.of_nat"><span class="id" title="variable">of_nat</span></a> <a class="idref" href="FinSet.Lib.CEExt.html#Choice.retract"><span class="id" title="variable">retract</span></a> <a class="idref" href="FinSet.Lib.CEExt.html#Choice.P"><span class="id" title="variable">P</span></a> (<span class="id" title="keyword">fun</span> <span class="id" title="var">x</span>⇒ <a class="idref" href="FinSet.Lib.DProp.html#dec_alt"><span class="id" title="definition">dec_alt</span></a> (<a class="idref" href="FinSet.Lib.CEExt.html#Choice.P"><span class="id" title="variable">P</span></a> <a class="idref" href="FinSet.Lib.CEExt.html#x"><span class="id" title="variable">x</span></a>))<br/>
+.<br/>
+
+<br/>
+</div>
+
+<div class="doc">
+<span class="inlinecode"><a class="idref" href="FinSet.Lib.CEExt.html#choose"><span class="id" title="definition">choose</span></a></span> is a choice operator on every inhabited countable
+    type. The main result in this file is that <span class="inlinecode"><a class="idref" href="FinSet.Lib.CEExt.html#choose"><span class="id" title="definition">choose</span></a></span> only depends
+    on the extension of <span class="inlinecode"><a class="idref" href="FinSet.FinSet.html#P"><span class="id" title="variable">P</span></a></span> (and the encoding). 
+</div>
+<div class="code">
+<span class="id" title="keyword">Definition</span> <a name="choose"><span class="id" title="definition">choose</span></a> (<span class="id" title="var">h</span>:<a class="idref" href="http://coq.inria.fr/distrib/trunk/stdlib/Coq.Init.Logic.html#84eb6d2849dbf3581b1c0c05add5f2d8"><span class="id" title="notation">∃</span></a> <span class="id" title="var">x</span><a class="idref" href="http://coq.inria.fr/distrib/trunk/stdlib/Coq.Init.Logic.html#84eb6d2849dbf3581b1c0c05add5f2d8"><span class="id" title="notation">,</span></a> <a class="idref" href="FinSet.Lib.CEExt.html#Choice.P"><span class="id" title="variable">P</span></a> <a class="idref" href="FinSet.Lib.CEExt.html#x"><span class="id" title="variable">x</span></a>) : <a class="idref" href="FinSet.Lib.CEExt.html#Choice.A"><span class="id" title="variable">A</span></a> := <a class="idref" href="http://coq.inria.fr/distrib/trunk/stdlib/Coq.Init.Specif.html#proj1_sig"><span class="id" title="definition">proj1_sig</span></a> (<a class="idref" href="FinSet.Lib.CEExt.html#choice"><span class="id" title="definition">choice</span></a> <a class="idref" href="FinSet.Lib.CEExt.html#h"><span class="id" title="variable">h</span></a>).<br/>
+
+<br/>
+<span class="id" title="keyword">Lemma</span> <a name="choose_spec"><span class="id" title="lemma">choose_spec</span></a> : <span class="id" title="keyword">∀</span> <span class="id" title="var">h</span>, <a class="idref" href="FinSet.Lib.CEExt.html#Choice.P"><span class="id" title="variable">P</span></a> (<a class="idref" href="FinSet.Lib.CEExt.html#choose"><span class="id" title="definition">choose</span></a> <a class="idref" href="FinSet.Lib.CEExt.html#h"><span class="id" title="variable">h</span></a>).<br/>
+
+<br/>
+<span class="id" title="keyword">End</span> <a class="idref" href="FinSet.Lib.CEExt.html#Choice"><span class="id" title="section">Choice</span></a>.<br/>
+
+<br/>
+</div>
+
+<div class="doc">
+<a name="lab34"></a><h1 class="section"><span class="inlinecode"><a class="idref" href="FinSet.Lib.CEExt.html#choose"><span class="id" title="definition">choose</span></a></span> is extensional</h1>
+
+</div>
+<div class="code">
+
+<br/>
+<span class="id" title="keyword">Lemma</span> <a name="linear_search_ext"><span class="id" title="lemma">linear_search_ext</span></a> : <span class="id" title="keyword">∀</span> <span class="id" title="var">P</span> <span class="id" title="var">P_dec</span> <span class="id" title="var">Q</span> <span class="id" title="var">Q_dec</span> <span class="id" title="var">n</span> <span class="id" title="var">w</span> <span class="id" title="var">v</span>, <a class="idref" href="http://coq.inria.fr/distrib/trunk/stdlib/Coq.Init.Logic.html#d43e996736952df71ebeeae74d10a287"><span class="id" title="notation">(</span></a><span class="id" title="keyword">∀</span> <span class="id" title="var">x</span>, <a class="idref" href="FinSet.Lib.CEExt.html#P"><span class="id" title="variable">P</span></a> <a class="idref" href="FinSet.Lib.CEExt.html#x"><span class="id" title="variable">x</span></a> <a class="idref" href="http://coq.inria.fr/distrib/trunk/stdlib/Coq.Init.Logic.html#df1ced36fc33ce188051218bca314374"><span class="id" title="notation">↔</span></a> <a class="idref" href="FinSet.Lib.CEExt.html#Q"><span class="id" title="variable">Q</span></a> <a class="idref" href="FinSet.Lib.CEExt.html#x"><span class="id" title="variable">x</span></a><a class="idref" href="http://coq.inria.fr/distrib/trunk/stdlib/Coq.Init.Logic.html#d43e996736952df71ebeeae74d10a287"><span class="id" title="notation">)</span></a> <a class="idref" href="http://coq.inria.fr/distrib/trunk/stdlib/Coq.Init.Logic.html#d43e996736952df71ebeeae74d10a287"><span class="id" title="notation">→</span></a><br/>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<a class="idref" href="http://coq.inria.fr/distrib/trunk/stdlib/Coq.Init.Specif.html#proj1_sig"><span class="id" title="definition">proj1_sig</span></a> (<a class="idref" href="http://coq.inria.fr/distrib/trunk/stdlib/Coq.Logic.ConstructiveEpsilon.html#linear_search"><span class="id" title="definition">ConstructiveEpsilon.linear_search</span></a> <a class="idref" href="FinSet.Lib.CEExt.html#P"><span class="id" title="variable">P</span></a> <a class="idref" href="FinSet.Lib.CEExt.html#P_dec"><span class="id" title="variable">P_dec</span></a> <a class="idref" href="FinSet.Lib.CEExt.html#n"><span class="id" title="variable">n</span></a> <a class="idref" href="FinSet.Lib.CEExt.html#w"><span class="id" title="variable">w</span></a>) <a class="idref" href="http://coq.inria.fr/distrib/trunk/stdlib/Coq.Init.Logic.html#1c39bf18749e5cc609e83c0a0ba5a372"><span class="id" title="notation">=</span></a><br/>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<a class="idref" href="http://coq.inria.fr/distrib/trunk/stdlib/Coq.Init.Specif.html#proj1_sig"><span class="id" title="definition">proj1_sig</span></a> (<a class="idref" href="http://coq.inria.fr/distrib/trunk/stdlib/Coq.Logic.ConstructiveEpsilon.html#linear_search"><span class="id" title="definition">ConstructiveEpsilon.linear_search</span></a> <a class="idref" href="FinSet.Lib.CEExt.html#Q"><span class="id" title="variable">Q</span></a> <a class="idref" href="FinSet.Lib.CEExt.html#Q_dec"><span class="id" title="variable">Q_dec</span></a> <a class="idref" href="FinSet.Lib.CEExt.html#n"><span class="id" title="variable">n</span></a> <a class="idref" href="FinSet.Lib.CEExt.html#v"><span class="id" title="variable">v</span></a>).<br/>
+
+<br/>
+<span class="id" title="keyword">Section</span> <a name="ChoiceExt"><span class="id" title="section">ChoiceExt</span></a>.<br/>
+
+<br/>
+<span class="id" title="keyword">Context</span> (<span class="id" title="var">A</span>:<span class="id" title="keyword">Type</span>).<br/>
+
+<br/>
+<span class="id" title="keyword">Local</span>&nbsp;<span class="id" title="keyword">Notation</span> <a name="1c74da0354dc371615e60b9fd48364e5"><span class="id" title="notation">&quot;</span></a>&acute;Π&acute; x y &acute;:&acute; R &acute;,&acute; S" := (<a class="idref" href="http://coq.inria.fr/distrib/trunk/stdlib/Coq.Classes.Morphisms.html#respectful_hetero"><span class="id" title="definition">respectful_hetero</span></a> <span class="id" title="var">_</span> <span class="id" title="var">_</span> <span class="id" title="var">_</span> <span class="id" title="var">_</span> <span class="id" title="var">R</span>%<span class="id" title="var">signature</span> (<span class="id" title="keyword">fun</span> <span class="id" title="var">x</span> <span class="id" title="var">y</span> ⇒ <span class="id" title="var">S</span>)%<span class="id" title="var">signature</span>) (<span class="id" title="tactic">at</span> <span class="id" title="keyword">level</span> 200, <span class="id" title="var">x</span> <span class="id" title="var">ident</span>, <span class="id" title="var">y</span> <span class="id" title="var">ident</span>).<br/>
+
+<br/>
+<span class="id" title="keyword">Lemma</span> <a name="choose_ext"><span class="id" title="lemma">choose_ext</span></a> : <a class="idref" href="http://coq.inria.fr/distrib/trunk/stdlib/Coq.Classes.Morphisms.html#Proper"><span class="id" title="class">Proper</span></a><br/>
+&nbsp;&nbsp;(<a class="idref" href="FinSet.Lib.CEExt.html#1c74da0354dc371615e60b9fd48364e5"><span class="id" title="notation">Π</span></a> <span class="id" title="var">to_nat₁</span> <span class="id" title="var">to_nat₂</span> <a class="idref" href="FinSet.Lib.CEExt.html#1c74da0354dc371615e60b9fd48364e5"><span class="id" title="notation">:</span></a> <a class="idref" href="http://coq.inria.fr/distrib/trunk/stdlib/Coq.Init.Logic.html#eq"><span class="id" title="inductive">eq</span></a><a class="idref" href="http://coq.inria.fr/distrib/trunk/stdlib/Coq.Classes.Morphisms.html#5bcff5fca4c3a87e683dd8ca07bab63f"><span class="id" title="notation">==&gt;</span></a><a class="idref" href="http://coq.inria.fr/distrib/trunk/stdlib/Coq.Init.Logic.html#eq"><span class="id" title="inductive">eq</span></a><a class="idref" href="FinSet.Lib.CEExt.html#1c74da0354dc371615e60b9fd48364e5"><span class="id" title="notation">,</span></a><br/>
+&nbsp;&nbsp;&nbsp;<a class="idref" href="FinSet.Lib.CEExt.html#1c74da0354dc371615e60b9fd48364e5"><span class="id" title="notation">Π</span></a> <span class="id" title="var">of_nat₁</span> <span class="id" title="var">of_nat₂</span> <a class="idref" href="FinSet.Lib.CEExt.html#1c74da0354dc371615e60b9fd48364e5"><span class="id" title="notation">:</span></a> <a class="idref" href="http://coq.inria.fr/distrib/trunk/stdlib/Coq.Init.Logic.html#eq"><span class="id" title="inductive">eq</span></a><a class="idref" href="http://coq.inria.fr/distrib/trunk/stdlib/Coq.Classes.Morphisms.html#5bcff5fca4c3a87e683dd8ca07bab63f"><span class="id" title="notation">==&gt;</span></a><a class="idref" href="http://coq.inria.fr/distrib/trunk/stdlib/Coq.Init.Logic.html#eq"><span class="id" title="inductive">eq</span></a><a class="idref" href="FinSet.Lib.CEExt.html#1c74da0354dc371615e60b9fd48364e5"><span class="id" title="notation">,</span></a><br/>
+&nbsp;&nbsp;&nbsp;<a class="idref" href="FinSet.Lib.CEExt.html#1c74da0354dc371615e60b9fd48364e5"><span class="id" title="notation">Π</span></a> <span class="id" title="var">_</span> <span class="id" title="var">_</span> <a class="idref" href="FinSet.Lib.CEExt.html#1c74da0354dc371615e60b9fd48364e5"><span class="id" title="notation">:</span></a> <a class="idref" href="FinSet.Lib.CEExt.html#1c74da0354dc371615e60b9fd48364e5"><span class="id" title="notation">(</span></a><span class="id" title="keyword">fun</span> <span class="id" title="var">_</span> <span class="id" title="var">_</span> ⇒ <a class="idref" href="http://coq.inria.fr/distrib/trunk/stdlib/Coq.Init.Logic.html#True"><span class="id" title="inductive">True</span></a><a class="idref" href="FinSet.Lib.CEExt.html#1c74da0354dc371615e60b9fd48364e5"><span class="id" title="notation">),</span></a><br/>
+&nbsp;&nbsp;&nbsp;<a class="idref" href="FinSet.Lib.CEExt.html#1c74da0354dc371615e60b9fd48364e5"><span class="id" title="notation">Π</span></a> <span class="id" title="var">P</span> <span class="id" title="var">P&acute;</span> <a class="idref" href="FinSet.Lib.CEExt.html#1c74da0354dc371615e60b9fd48364e5"><span class="id" title="notation">:</span></a> <a class="idref" href="http://coq.inria.fr/distrib/trunk/stdlib/Coq.Init.Logic.html#eq"><span class="id" title="inductive">eq</span></a><a class="idref" href="http://coq.inria.fr/distrib/trunk/stdlib/Coq.Classes.Morphisms.html#5bcff5fca4c3a87e683dd8ca07bab63f"><span class="id" title="notation">==&gt;</span></a><a class="idref" href="FinSet.Lib.DProp.html#eq_dprop"><span class="id" title="definition">eq_dprop</span></a><a class="idref" href="FinSet.Lib.CEExt.html#1c74da0354dc371615e60b9fd48364e5"><span class="id" title="notation">,</span></a><br/>
+&nbsp;&nbsp;&nbsp;<a class="idref" href="FinSet.Lib.CEExt.html#1c74da0354dc371615e60b9fd48364e5"><span class="id" title="notation">Π</span></a> <span class="id" title="var">_</span> <span class="id" title="var">_</span> <a class="idref" href="FinSet.Lib.CEExt.html#1c74da0354dc371615e60b9fd48364e5"><span class="id" title="notation">:</span></a> <a class="idref" href="FinSet.Lib.CEExt.html#1c74da0354dc371615e60b9fd48364e5"><span class="id" title="notation">(</span></a><span class="id" title="keyword">fun</span> <span class="id" title="var">_</span> <span class="id" title="var">_</span> ⇒ <a class="idref" href="http://coq.inria.fr/distrib/trunk/stdlib/Coq.Init.Logic.html#True"><span class="id" title="inductive">True</span></a><a class="idref" href="FinSet.Lib.CEExt.html#1c74da0354dc371615e60b9fd48364e5"><span class="id" title="notation">),</span></a><br/>
+&nbsp;&nbsp;&nbsp;@<a class="idref" href="http://coq.inria.fr/distrib/trunk/stdlib/Coq.Init.Logic.html#eq"><span class="id" title="inductive">eq</span></a> <a class="idref" href="FinSet.Lib.CEExt.html#ChoiceExt.A"><span class="id" title="variable">A</span></a>) <a class="idref" href="FinSet.Lib.CEExt.html#choose"><span class="id" title="definition">choose</span></a>.<br/>
+
+<br/>
+<span class="id" title="keyword">End</span> <a class="idref" href="FinSet.Lib.CEExt.html#ChoiceExt"><span class="id" title="section">ChoiceExt</span></a>.<br/>
+</div>
+</div>
+
+<div id="footer">
+<hr/><a href="index.html">Index</a><hr/>This page has been generated by <a href="http://coq.inria.fr/">coqdoc</a>
+</div>
+
+</div>
+
+</body>
+</html>
