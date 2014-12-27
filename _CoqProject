@@ -1,1 +1,8 @@
 -R . FinSet
+./Lib/CEExt.v
+./Lib/DProp.v
+./Lib/ListSet.v
+./Quotients/Retract.v
+./Quotients/Countable.v
+./Quotients/Quotient.v
+./FinSet.v
