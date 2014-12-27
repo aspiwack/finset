@@ -46,7 +46,7 @@ Program Definition dec_alt (P:DProp) : {P}+{~P} := dec_lift (dec P).
 (** * Equality *)
 
 (** In a decidable proposition, the [dec] field is "proof irrelevant"
-    if the propositions are. In particular if equivalent proposition
+    if the propositions are. In particular if equivalent propositions
     are equal (propositional extensionality, which happens to imply
     proof irrelevance of propositions), then Coq's equality is the
     appropriate one for [DProp]. *)

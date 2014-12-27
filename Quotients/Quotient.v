@@ -16,14 +16,14 @@ Require Import FinSet.Quotients.Retract.
 (** The quotient of [A] by [R] maps [x] to the canonical
     representative of the equivalence class [R x] (which is given by
     definite description). The definition of [Quotient R] requires
-    that [R] is reflexive to ensure that [R x] is non-empty, of
-    course, it is only really useful when [R] is an
-    equivalence. Indeed, symmetry and transitivity will ensure that [R
-    x] and [R y] are equivalent by [R x y], which, by extensionality
-    of [choose] will ensure the canonical representative of [R x] and
-    [R y] are indeed equal. The use of [Canonize] in the definition
-    makes it so that extensional equality on [Quotient R] is Coq's
-    primitive equality. *)
+    that [R] is reflexive to ensure that [R x] is non-empty. Of
+    course, the quotient construction is only really useful when [R]
+    is an equivalence. Indeed, symmetry and transitivity will ensure
+    that [R x] and [R y] are equivalent when [R x y], which, by
+    extensionality of [choose] will ensure that the canonical
+    representatives of [R x] and [R y] are indeed equal. The use of
+    [Canonize] in the definition makes it so that extensional equality
+    on [Quotient R] is Coq's primitive equality. *)
 Program Definition Quotient {A} {_:Countable A} (R:A->A->DProp) {_:Reflexive R} : Type :=
   { x:A | Canonize (eq_countable (choose (R x) _) x) }.
 

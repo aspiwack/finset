@@ -83,6 +83,7 @@ Section Quantifiers.
 
 End Quantifiers.
 
+Arguments mem : simpl never.
 Arguments mem_spec : clear implicits.
 Arguments mem_spec_in : clear implicits.
 
@@ -152,12 +153,12 @@ Section SetOperations.
  (** Union over a finite set of finite sets. Together with [singleton]
      forms a monad (restricted to countable types). This monad allows
      to build sets by comprehension. *)
- Definition bind (u:T A) (F:A->T B) : T B :=
+ Definition Union (u:T A) (F:A->T B) : T B :=
    listset.(proj) (List.flat_map (fun x => listset.(inj) (F x)) (listset.(inj) u)).
 
- Lemma bind_spec u F x : x ∈ (bind u F) <-> exists y, y∈u /\ x ∈ (F y).
+ Lemma Union_spec u F x : x ∈ (Union u F) <-> exists y, y∈u /\ x ∈ (F y).
  Proof.
-   unfold bind. rewrite mem_spec_in,  Quotient.universal.
+   unfold Union. rewrite mem_spec_in,  Quotient.universal.
    rewrite List.in_flat_map.
    split.
    + intros [a [ha₁ ha₂]]. eexists.
@@ -170,11 +171,15 @@ Section SetOperations.
 
 End SetOperations.
 
+Arguments empty : simpl never.
+Arguments singleton : simpl never.
+Arguments union : simpl never.
+Arguments Union : simpl never.
 Arguments empty_spec : clear implicits.
 Arguments empty_spec_iff : clear implicits.
 Arguments singleton_spec : clear implicits.
 Arguments union_spec : clear implicits.
-Arguments bind_spec : clear implicits.
+Arguments Union_spec : clear implicits.
 
 
 (** [guard P] is the last component of the comprehension syntax. It
@@ -182,6 +187,7 @@ Arguments bind_spec : clear implicits.
     to implement the "such that" clause of comprehension. *)
 Definition guard (P:DProp) : T unit :=
   if (dec P) then (listset).(proj) [tt] else empty.
+Arguments guard : simpl never.
 
 Lemma guard_spec_tt P : tt∈(guard P) <-> P.
 Proof.
@@ -199,11 +205,11 @@ Proof.
   intros []. apply guard_spec_tt.
 Qed.
 
-Lemma guard_bind A (_:Countable A) P (u:T A) :
-  forall x, x∈(bind (guard P) (fun _ => u)) <-> x∈u /\ P.
+Lemma guard_Union A (_:Countable A) P (u:T A) :
+  forall x, x∈(Union (guard P) (fun _ => u)) <-> x∈u /\ P.
 Proof.
   intros x.
-  rewrite bind_spec.
+  rewrite Union_spec.
   split.
   + intros [[] [p h]].
     rewrite guard_spec in p. tauto.
@@ -217,9 +223,9 @@ Module ComprehensionNotations.
 
  Delimit Scope comprehension with comprehension.
 
- Notation "u '⍪' x '∈' v" := (bind v (fun x => u))
+ Notation "u '⍪' x '∈' v" := (Union v (fun x => u))
        (at level 50, x ident, v at level 20, right associativity) : comprehension.
- Notation "u 'ﬆ' p" := (bind (guard p) (fun _ => u))
+ Notation "u 'ﬆ' p" := (Union (guard p) (fun _ => u))
        (at level 50, p at level 20, right associativity) : comprehension.
  Notation "a '\' " := (singleton a) (at level 20) : comprehension.
  Notation "'⦃' x '⦄'" := (x%comprehension).
@@ -232,19 +238,20 @@ Import ComprehensionNotations.
 (** ** Derived operations *)
 
 Definition inter {A} {_:Countable A} (u₁ u₂:T A) : T A := ⦃ x \ ﬆ x∈u₂ ⍪ x∈u₁  ⦄.
+Arguments inter : simpl never.
 
 Lemma inter_spec A (_:Countable A) (u₁ u₂:T A) :
   forall x, x ∈ (inter u₁ u₂) <-> x∈u₁ /\ x∈u₂.
 Proof.
   intros x. unfold inter.
-  rewrite bind_spec.
+  rewrite Union_spec.
   split.
   + intros [x' [h₁ h₂]].
-    rewrite guard_bind,singleton_spec in h₂. destruct h₂ as [<- h₂].
+    rewrite guard_Union,singleton_spec in h₂. destruct h₂ as [<- h₂].
     intuition.
   + intros [h₁ h₂].
     exists x.
-    rewrite guard_bind,singleton_spec.
+    rewrite guard_Union,singleton_spec.
     intuition.
 Qed.
 
@@ -256,8 +263,8 @@ Definition subset {A} {_:Countable A} (u v:T A) : DProp := dforall u (fun x => x
 Lemma double_inclusion A (_:Countable A) (u v:T A) :
   subset u v -> subset v u -> u = v.
 Proof.
-  intros h₁ h₂.
-  apply quotient_ext. cbn in *.
+  intros h₁ h₂. cbn in *.
+  apply quotient_ext. unfold mem in *. cbn in *.
   intuition eauto.
 Qed.
 
@@ -271,8 +278,7 @@ Qed.
 Lemma set_ext A (_:Countable A) (u v:T A) : (forall x, x∈u <-> x∈v) -> u=v.
 Proof.
   intros h.
-  apply double_inclusion.
-  all: cbn -[mem].
+  apply double_inclusion. all: cbn.
   all: eapply h.
 Qed.
 
@@ -295,10 +301,11 @@ Import SetNotations.
 (** * Algebraic properties *)
 
 Hint Rewrite union_spec inter_spec empty_spec_iff singleton_spec : set_simplify.
+Hint Rewrite guard_Union Union_spec : set_simplify.
 
 Ltac set_intuition :=
   intros **;
-  apply set_ext; intros ?; autorewrite with set_simplify; intuition eauto.
+  apply set_ext; intros ?; autorewrite with set_simplify in *; intuition eauto.
 
 Section Algebraic.
 
@@ -351,12 +358,12 @@ Section Algebraic.
  Proof.
    intros u. split.
    + intros h. split.
-     all: intros x. all: cbn [DNot Holds Denies].
-     all: specialize (h x). all: cbn [DNot Holds Denies] in h.
+     all: intros x. all: cbn.
+     all: specialize (h x). all: cbn in h.
      all:autorewrite with set_simplify in h.
      all:tauto.
-   + intros [h₁ h₂] x. cbn [DNot Holds Denies].
-     specialize (h₁ x); specialize (h₂ x). cbn [DNot Holds Denies] in h₁,h₂.
+   + intros [h₁ h₂] x. cbn.
+     specialize (h₁ x); specialize (h₂ x). cbn in h₁,h₂.
      autorewrite with set_simplify.
      tauto.
  Qed.
@@ -365,12 +372,12 @@ Section Algebraic.
  Proof.
    intros v. split.
    + intros h. split.
-     all: intros x. all: cbn [DNot Holds Denies].
-     all: specialize (h x). all: cbn [DNot Holds Denies] in h.
+     all: intros x. all: cbn.
+     all: specialize (h x). all: cbn in h.
      all:autorewrite with set_simplify in h.
      all:tauto.
-   + intros [h₁ h₂] x. cbn [DNot Holds Denies].
-     specialize (h₁ x); specialize (h₂ x). cbn [DNot Holds Denies] in h₁,h₂.
+   + intros [h₁ h₂] x. cbn.
+     specialize (h₁ x); specialize (h₂ x). cbn in h₁,h₂.
      autorewrite with set_simplify.
      tauto.
  Qed.
