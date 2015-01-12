@@ -1,3 +1,4 @@
+Require Coq.Logic.EqdepFacts.
 Require Import Coq.Classes.RelationClasses.
 Require Import Coq.Classes.Morphisms.
 Require Coq.Setoids.Setoid.
@@ -210,6 +211,19 @@ Defined.
 Arguments dprop_of_bool_obligation_1 _ /.
 
 Coercion dprop_of_bool : bool >-> DProp.
+
+(** * Subset types *)
+
+Lemma dsigma_ext A (P:A->DProp) :
+  forall (x y:{x:A | Canonize (P x)}), proj1_sig x = proj1_sig y -> x = y.
+Proof.
+  intros [x hx] [y hy] h. cbn in *.
+  apply EqdepFacts.eq_dep_eq_sig, EqdepFacts.eq_dep1_dep.
+  refine (EqdepFacts.eq_dep1_intro _ _ _ _ _ _ _ _); cycle 1.
+  { apply irrelevant_canonize. }
+  auto.
+Qed.
+  
 
 (** * Tactics *)
 

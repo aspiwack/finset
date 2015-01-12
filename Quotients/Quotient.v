@@ -46,11 +46,9 @@ Next Obligation.
 Qed.
 Next Obligation.
   intros A ? R ? [x hx]. cbn.
-  apply EqdepFacts.eq_dep_eq_sig, EqdepFacts.eq_dep1_dep.
-  refine (EqdepFacts.eq_dep1_intro _ _ _ _ _ _ _ _); cycle 1.
-  { apply irrelevant_canonize. }
+  apply dsigma_ext. cbn.
   rewrite canonize_spec in hx. cbn in hx.
-  symmetry. exact hx.
+  exact hx.
 Qed.
 
 
