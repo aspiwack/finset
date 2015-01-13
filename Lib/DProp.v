@@ -145,6 +145,24 @@ Proof.
   apply denies_spec.
 Qed.
 
+Instance dand_proper : Proper (eq_dprop ==> eq_dprop ==> eq_dprop) DAnd.
+Proof.
+  intros A₁ A₂ ha B₁ B₂ hb. cbn in *.
+  tauto.
+Qed.
+
+Instance dor_proper : Proper (eq_dprop ==> eq_dprop ==> eq_dprop) DOr.
+Proof.
+  intros A₁ A₂ ha B₁ B₂ hb. cbn in *.
+  tauto.
+Qed.
+
+Instance dnot_proper : Proper (eq_dprop ==> eq_dprop) DNot.
+Proof.
+  intros A₁ A₂ ha. cbn in *.
+  rewrite !denies_spec. tauto.
+Qed.
+
 
 (** * Proof irrelevance *)
 
