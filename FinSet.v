@@ -14,7 +14,8 @@ Require Import FinSet.Quotients.Quotient.
 
 Definition T (A:Type) {_:Countable A} : Type := Quotient (eq_set_list eq_countable).
 
-Notation listset := (quotient (eq_set_list eq_countable)).
+Definition listset {A} {_:Countable A} :=
+  (quotient (eq_set_list eq_countable)).
 
 Instance set_countable (A:Type) {_:Countable A} : Countable (T A).
 Proof. typeclasses eauto. Defined.
