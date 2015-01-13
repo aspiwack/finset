@@ -34,14 +34,14 @@ Class Countable A := countable : Retract nat (option A).
     [option] type in our calculation. *)
 Class Inhabited A := inhabitant : A.
 
-Definition to_nat {A} {_:Countable A} {_:Inhabited A} : A -> nat :=
-  (retract_nat_inh countable inhabitant).(inj).
+Definition to_nat {A} {_:Countable A} (x:A) : nat :=
+  countable.(inj) (Some x).
 Definition of_nat {A} {_:Countable A} {_:Inhabited A} : nat -> A :=
   (retract_nat_inh countable inhabitant).(proj).
 
 Lemma nat_retract A {_:Countable A} {_:Inhabited A} : forall x, of_nat (to_nat x) = x.
 Proof.
-  intros *. unfold of_nat, to_nat.
+  intros *. unfold of_nat, to_nat. cbn.
   now rewrite !retract.
 Qed.
 
