@@ -65,9 +65,7 @@ Instance proj_proper A (_:Countable A) (R:A->A->DProp) (_:Equivalence R) :
   Proper (R==>eq) (quotient R).(proj).
 Proof.
   intros x y hr. cbn.
-  apply EqdepFacts.eq_dep_eq_sig, EqdepFacts.eq_dep1_dep.
-  refine (EqdepFacts.eq_dep1_intro _ _ _ _ _ _ _ _); cycle 1.
-  { apply irrelevant_canonize. }
+  apply dsigma_ext. cbn.
   apply choose_ext;[>|trivial]. intros z ? <-. cbn.
   rewrite hr. reflexivity.
 Qed.
