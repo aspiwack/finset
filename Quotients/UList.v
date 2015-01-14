@@ -3,6 +3,7 @@
     of lists. *)
 
 Require Import Coq.Classes.RelationClasses.
+Require Import Coq.Classes.Morphisms.
 Require Import FinSet.Lib.DProp.
 Require Import FinSet.Lib.ListSet.
 Require Import FinSet.Quotients.Retract.
@@ -54,6 +55,34 @@ Proof.
   now (rewrite canonize_spec in hl).
 Qed.
 
+Lemma ulist_eq_set A (R:A->A->DProp) (e:Equivalence R) :
+  forall l:list A, eq_set_list R ((ulist (R:=R)).(inj) (ulist.(proj) l)) l.
+Proof.
+  intros l. cbn [inj proj ulist proj1_sig].
+  now rewrite <- deduplicate_eq_set_list.
+Qed.
+
+
+(** * Set equality *)
+
+Definition eq_set_ulist {A} R (l₁ l₂:UList A R) : DProp :=
+  eq_set_list R (ulist.(inj) l₁) (ulist.(inj) l₂).
+
+Instance eq_set_eq A (R:A->A->DProp) :
+  Equivalence R -> Equivalence (eq_set_ulist R).
+Proof.
+  intros e. split. all:unfold Reflexive,Symmetric,Transitive,eq_set_ulist.
+  + intros **. reflexivity.
+  + intros **. symmetry. assumption.
+  + intros **. etransitivity. all:eassumption.
+Qed.
+
+Instance ulist_proper A (R:A->A->DProp) (e:Equivalence R) :
+  Proper (eq_set_ulist R ==> eq_set_list R) ulist.(inj).
+Proof.
+  unfold Proper, respectful, eq_set_ulist.
+  easy.
+Qed.
 
 (** * Instances *)
 

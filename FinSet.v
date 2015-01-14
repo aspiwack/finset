@@ -6,20 +6,39 @@ Require Coq.Setoids.Setoid.
 Require Import Coq.Classes.RelationClasses.
 Require Import Coq.Classes.Morphisms.
 Require Import FinSet.Lib.ListSet.
+Require Import FinSet.Quotients.UList.
 Require Import FinSet.Lib.DProp.
 Require Import FinSet.Quotients.Countable.
 Require Import FinSet.Quotients.Retract.
 Require Import FinSet.Quotients.Quotient.
 
 
-Definition T (A:Type) {_:Countable A} : Type := Quotient (eq_set_list eq_countable).
-
-Definition listset {A} {_:Countable A} :=
-  (quotient (eq_set_list eq_countable)).
+Definition T (A:Type) {_:Countable A} : Type := Quotient (eq_set_ulist eq_countable).
 
 Instance set_countable (A:Type) {_:Countable A} : Countable (T A).
 Proof. typeclasses eauto. Defined.
 
+(** * Low level interface *)
+
+Definition listset {A} {_:Countable A} : Retract (list A) (T A) :=
+  Retract.compose ulist (quotient (eq_set_ulist eq_countable)).
+
+Lemma set_quotient A (_:Countable A) : forall x,
+  eq_set_list eq_countable (listset.(inj) (listset.(proj) x)) x.
+Proof.
+  intros x. unfold listset,compose. cbn [inj proj].
+  rewrite Quotient.universal.
+  apply ulist_eq_set.
+  { typeclasses eauto. }
+Qed.
+
+Lemma set_unique A (_:Countable A) :
+  forall x, nodup eq_countable (listset.(inj) x).
+Proof.
+  intros x. unfold listset,compose. cbn [inj].
+  apply ulist_nodup.
+Qed.
+  
 
 (** * Quantifiers *)
 
@@ -115,7 +134,7 @@ Section SetOperations.
  Lemma empty_spec : forall x, ~x∈empty.
  Proof.
    intros x n. unfold empty in n.
-   rewrite mem_spec, Quotient.universal in n.
+   rewrite mem_spec, set_quotient in n.
    eauto.
  Qed.
 
@@ -131,7 +150,7 @@ Section SetOperations.
 
  Lemma singleton_spec : forall x a, x∈(singleton a) <-> x=a.
  Proof.
-   intros *. unfold singleton. rewrite mem_spec_in, Quotient.universal.
+   intros *. unfold singleton. rewrite mem_spec_in, set_quotient.
    cbn. intuition.
  Qed.
 
@@ -146,7 +165,7 @@ Section SetOperations.
  Lemma union_spec : forall x u₁ u₂, x∈(union u₁ u₂) <-> x∈u₁ \/ x∈u₂.
  Proof.
    intros *. unfold union.
-   rewrite mem_spec,Quotient.universal.
+   rewrite mem_spec,set_quotient.
    rewrite mem_list_app. unfold mem.
    reflexivity.
  Qed.
@@ -159,7 +178,7 @@ Section SetOperations.
 
  Lemma Union_spec u F x : x ∈ (Union u F) <-> exists y, y∈u /\ x ∈ (F y).
  Proof.
-   unfold Union. rewrite mem_spec_in,  Quotient.universal.
+   unfold Union. rewrite mem_spec_in,  set_quotient.
    rewrite List.in_flat_map.
    split.
    + intros [a [ha₁ ha₂]]. eexists.
@@ -194,7 +213,7 @@ Lemma guard_spec_tt P : tt∈(guard P) <-> P.
 Proof.
   unfold guard.
   destruct (dec P) as [p|n].
-  + rewrite mem_spec, Quotient.universal.
+  + rewrite mem_spec, set_quotient.
     ddecide (mem_list eq_countable tt [tt]) h. cbn.
     intuition.
   + generalize (empty_spec _ _ tt).
