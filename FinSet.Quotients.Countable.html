@@ -73,8 +73,8 @@ We also use an inhabitation type class, which will help avoid the
 <span class="id" title="keyword">Class</span> <a name="Inhabited"><span class="id" title="record">Inhabited</span></a> <span class="id" title="var">A</span> := <a name="inhabitant"><span class="id" title="projection">inhabitant</span></a> : <a class="idref" href="FinSet.Quotients.Countable.html#A"><span class="id" title="variable">A</span></a>.<br/>
 
 <br/>
-<span class="id" title="keyword">Definition</span> <a name="to_nat"><span class="id" title="definition">to_nat</span></a> {<span class="id" title="var">A</span>} {<span class="id" title="var">_</span>:<a class="idref" href="FinSet.Quotients.Countable.html#Countable"><span class="id" title="class">Countable</span></a> <a class="idref" href="FinSet.Quotients.Countable.html#A"><span class="id" title="variable">A</span></a>} {<span class="id" title="var">_</span>:<a class="idref" href="FinSet.Quotients.Countable.html#Inhabited"><span class="id" title="class">Inhabited</span></a> <a class="idref" href="FinSet.Quotients.Countable.html#A"><span class="id" title="variable">A</span></a>} : <a class="idref" href="FinSet.Quotients.Countable.html#A"><span class="id" title="variable">A</span></a> <a class="idref" href="http://coq.inria.fr/distrib/trunk/stdlib/Coq.Init.Logic.html#d43e996736952df71ebeeae74d10a287"><span class="id" title="notation">→</span></a> <a class="idref" href="http://coq.inria.fr/distrib/trunk/stdlib/Coq.Init.Datatypes.html#nat"><span class="id" title="inductive">nat</span></a> :=<br/>
-&nbsp;&nbsp;(<a class="idref" href="FinSet.Quotients.Retract.html#retract_nat_inh"><span class="id" title="definition">retract_nat_inh</span></a> <a class="idref" href="FinSet.Quotients.Countable.html#countable"><span class="id" title="definition">countable</span></a> <a class="idref" href="FinSet.Quotients.Countable.html#inhabitant"><span class="id" title="definition">inhabitant</span></a>).(<a class="idref" href="FinSet.Quotients.Retract.html#inj"><span class="id" title="projection">inj</span></a>).<br/>
+<span class="id" title="keyword">Definition</span> <a name="to_nat"><span class="id" title="definition">to_nat</span></a> {<span class="id" title="var">A</span>} {<span class="id" title="var">_</span>:<a class="idref" href="FinSet.Quotients.Countable.html#Countable"><span class="id" title="class">Countable</span></a> <a class="idref" href="FinSet.Quotients.Countable.html#A"><span class="id" title="variable">A</span></a>} (<span class="id" title="var">x</span>:<a class="idref" href="FinSet.Quotients.Countable.html#A"><span class="id" title="variable">A</span></a>) : <a class="idref" href="http://coq.inria.fr/distrib/trunk/stdlib/Coq.Init.Datatypes.html#nat"><span class="id" title="inductive">nat</span></a> :=<br/>
+&nbsp;&nbsp;<a class="idref" href="FinSet.Quotients.Countable.html#countable"><span class="id" title="definition">countable</span></a>.(<a class="idref" href="FinSet.Quotients.Retract.html#inj"><span class="id" title="projection">inj</span></a>) (<a class="idref" href="http://coq.inria.fr/distrib/trunk/stdlib/Coq.Init.Datatypes.html#Some"><span class="id" title="constructor">Some</span></a> <a class="idref" href="FinSet.Quotients.Countable.html#x"><span class="id" title="variable">x</span></a>).<br/>
 <span class="id" title="keyword">Definition</span> <a name="of_nat"><span class="id" title="definition">of_nat</span></a> {<span class="id" title="var">A</span>} {<span class="id" title="var">_</span>:<a class="idref" href="FinSet.Quotients.Countable.html#Countable"><span class="id" title="class">Countable</span></a> <a class="idref" href="FinSet.Quotients.Countable.html#A"><span class="id" title="variable">A</span></a>} {<span class="id" title="var">_</span>:<a class="idref" href="FinSet.Quotients.Countable.html#Inhabited"><span class="id" title="class">Inhabited</span></a> <a class="idref" href="FinSet.Quotients.Countable.html#A"><span class="id" title="variable">A</span></a>} : <a class="idref" href="http://coq.inria.fr/distrib/trunk/stdlib/Coq.Init.Datatypes.html#nat"><span class="id" title="inductive">nat</span></a> <a class="idref" href="http://coq.inria.fr/distrib/trunk/stdlib/Coq.Init.Logic.html#d43e996736952df71ebeeae74d10a287"><span class="id" title="notation">→</span></a> <a class="idref" href="FinSet.Quotients.Countable.html#A"><span class="id" title="variable">A</span></a> :=<br/>
 &nbsp;&nbsp;(<a class="idref" href="FinSet.Quotients.Retract.html#retract_nat_inh"><span class="id" title="definition">retract_nat_inh</span></a> <a class="idref" href="FinSet.Quotients.Countable.html#countable"><span class="id" title="definition">countable</span></a> <a class="idref" href="FinSet.Quotients.Countable.html#inhabitant"><span class="id" title="definition">inhabitant</span></a>).(<a class="idref" href="FinSet.Quotients.Retract.html#proj"><span class="id" title="projection">proj</span></a>).<br/>
 
@@ -132,7 +132,7 @@ Countable types have decidable equality: it is sufficient to test
 </div>
 
 <div class="doc">
-<a name="lab16"></a><h1 class="section">Inhabited instances</h1>
+<a name="lab19"></a><h1 class="section">Inhabited instances</h1>
 
 </div>
 <div class="code">
@@ -154,7 +154,7 @@ Countable types have decidable equality: it is sufficient to test
 </div>
 
 <div class="doc">
-<a name="lab17"></a><h1 class="section">Countable instances</h1>
+<a name="lab20"></a><h1 class="section">Countable instances</h1>
 
 </div>
 <div class="code">
@@ -253,7 +253,7 @@ This could be established using <span class="inlinecode"><span class="id" title=
 </div>
 
 <div class="doc">
-<a name="lab18"></a><h1 class="section">Constructive indefinite description</h1>
+<a name="lab21"></a><h1 class="section">Constructive indefinite description</h1>
 
 <div class="paragraph"> </div>
 

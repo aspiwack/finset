@@ -1,0 +1,107 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
+"http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<link href="coqdoc.css" rel="stylesheet" type="text/css" />
+<title>FinSet.Quotients.UList</title>
+</head>
+
+<body>
+
+<div id="page">
+
+<div id="header">
+</div>
+
+<div id="main">
+
+<h1 class="libtitle">Library FinSet.Quotients.UList</h1>
+
+<div class="code">
+</div>
+
+<div class="doc">
+This file defines a high level interface for lists with no
+    duplicates of types with decidable equality. They form a retract
+    of lists. 
+</div>
+<div class="code">
+
+<br/>
+<span class="id" title="keyword">Require</span> <span class="id" title="keyword">Import</span> <a class="idref" href="http://coq.inria.fr/distrib/trunk/stdlib/Coq.Classes.RelationClasses.html#"><span class="id" title="library">Coq.Classes.RelationClasses</span></a>.<br/>
+<span class="id" title="keyword">Require</span> <span class="id" title="keyword">Import</span> <a class="idref" href="http://coq.inria.fr/distrib/trunk/stdlib/Coq.Classes.Morphisms.html#"><span class="id" title="library">Coq.Classes.Morphisms</span></a>.<br/>
+<span class="id" title="keyword">Require</span> <span class="id" title="keyword">Import</span> <a class="idref" href="FinSet.Lib.DProp.html#"><span class="id" title="library">FinSet.Lib.DProp</span></a>.<br/>
+<span class="id" title="keyword">Require</span> <span class="id" title="keyword">Import</span> <a class="idref" href="FinSet.Lib.ListSet.html#"><span class="id" title="library">FinSet.Lib.ListSet</span></a>.<br/>
+<span class="id" title="keyword">Require</span> <span class="id" title="keyword">Import</span> <a class="idref" href="FinSet.Quotients.Retract.html#"><span class="id" title="library">FinSet.Quotients.Retract</span></a>.<br/>
+<span class="id" title="keyword">Require</span> <span class="id" title="keyword">Import</span> <a class="idref" href="FinSet.Quotients.Countable.html#"><span class="id" title="library">FinSet.Quotients.Countable</span></a>.<br/>
+
+<br/>
+<span class="id" title="keyword">Definition</span> <a name="UList"><span class="id" title="definition">UList</span></a> (<span class="id" title="var">A</span>:<span class="id" title="keyword">Type</span>) (<span class="id" title="var">R</span>:<a class="idref" href="FinSet.Quotients.UList.html#A"><span class="id" title="variable">A</span></a><a class="idref" href="http://coq.inria.fr/distrib/trunk/stdlib/Coq.Init.Logic.html#d43e996736952df71ebeeae74d10a287"><span class="id" title="notation">→</span></a><a class="idref" href="FinSet.Quotients.UList.html#A"><span class="id" title="variable">A</span></a><a class="idref" href="http://coq.inria.fr/distrib/trunk/stdlib/Coq.Init.Logic.html#d43e996736952df71ebeeae74d10a287"><span class="id" title="notation">→</span></a><a class="idref" href="FinSet.Lib.DProp.html#DProp"><span class="id" title="record">DProp</span></a>) : <span class="id" title="keyword">Type</span> :=<br/>
+&nbsp;&nbsp;<a class="idref" href="http://coq.inria.fr/distrib/trunk/stdlib/Coq.Init.Specif.html#72ca3fac4636a1b19c963b12162882cf"><span class="id" title="notation">{</span></a> <span class="id" title="var">l</span><a class="idref" href="http://coq.inria.fr/distrib/trunk/stdlib/Coq.Init.Specif.html#72ca3fac4636a1b19c963b12162882cf"><span class="id" title="notation">:</span></a><a class="idref" href="http://coq.inria.fr/distrib/trunk/stdlib/Coq.Init.Datatypes.html#list"><span class="id" title="inductive">list</span></a> <a class="idref" href="FinSet.Quotients.UList.html#A"><span class="id" title="variable">A</span></a> <a class="idref" href="http://coq.inria.fr/distrib/trunk/stdlib/Coq.Init.Specif.html#72ca3fac4636a1b19c963b12162882cf"><span class="id" title="notation">|</span></a> <a class="idref" href="FinSet.Lib.DProp.html#Canonize"><span class="id" title="definition">Canonize</span></a> (<a class="idref" href="FinSet.Lib.ListSet.html#nodup"><span class="id" title="definition">nodup</span></a> <a class="idref" href="FinSet.Quotients.UList.html#R"><span class="id" title="variable">R</span></a> <span class="id" title="var">l</span>) <a class="idref" href="http://coq.inria.fr/distrib/trunk/stdlib/Coq.Init.Specif.html#72ca3fac4636a1b19c963b12162882cf"><span class="id" title="notation">}</span></a>.<br/>
+
+<br/>
+<span class="id" title="keyword">Program Definition</span> <a name="ulist"><span class="id" title="definition">ulist</span></a> {<span class="id" title="var">A</span>} {<span class="id" title="var">R</span>:<a class="idref" href="FinSet.Quotients.UList.html#A"><span class="id" title="variable">A</span></a><a class="idref" href="http://coq.inria.fr/distrib/trunk/stdlib/Coq.Init.Logic.html#d43e996736952df71ebeeae74d10a287"><span class="id" title="notation">→</span></a><a class="idref" href="FinSet.Quotients.UList.html#A"><span class="id" title="variable">A</span></a><a class="idref" href="http://coq.inria.fr/distrib/trunk/stdlib/Coq.Init.Logic.html#d43e996736952df71ebeeae74d10a287"><span class="id" title="notation">→</span></a><a class="idref" href="FinSet.Lib.DProp.html#DProp"><span class="id" title="record">DProp</span></a>} :<br/>
+&nbsp;<a class="idref" href="FinSet.Quotients.Retract.html#Retract"><span class="id" title="record">Retract</span></a> (<a class="idref" href="http://coq.inria.fr/distrib/trunk/stdlib/Coq.Init.Datatypes.html#list"><span class="id" title="inductive">list</span></a> <a class="idref" href="FinSet.Quotients.UList.html#A"><span class="id" title="variable">A</span></a>) (<a class="idref" href="FinSet.Quotients.UList.html#UList"><span class="id" title="definition">UList</span></a> <a class="idref" href="FinSet.Quotients.UList.html#A"><span class="id" title="variable">A</span></a> <a class="idref" href="FinSet.Quotients.UList.html#R"><span class="id" title="variable">R</span></a>) := {|<br/>
+&nbsp;&nbsp;<a class="idref" href="FinSet.Quotients.Retract.html#Build_Retract"><span class="id" title="constructor">inj</span></a> <a class="idref" href="FinSet.Quotients.Retract.html#Build_Retract"><span class="id" title="constructor">l</span></a> <a class="idref" href="FinSet.Quotients.Retract.html#Build_Retract"><span class="id" title="constructor">:=</span></a> <a class="idref" href="FinSet.Quotients.Retract.html#Build_Retract"><span class="id" title="constructor">l</span></a><a class="idref" href="FinSet.Quotients.Retract.html#Build_Retract"><span class="id" title="constructor">;</span></a><br/>
+&nbsp;&nbsp;<a class="idref" href="FinSet.Quotients.Retract.html#Build_Retract"><span class="id" title="constructor">proj</span></a> <a class="idref" href="FinSet.Quotients.Retract.html#Build_Retract"><span class="id" title="constructor">l</span></a> <a class="idref" href="FinSet.Quotients.Retract.html#Build_Retract"><span class="id" title="constructor">:=</span></a> <a class="idref" href="FinSet.Quotients.Retract.html#Build_Retract"><span class="id" title="constructor">deduplicate</span></a> <a class="idref" href="FinSet.Quotients.Retract.html#Build_Retract"><span class="id" title="constructor">R</span></a> <a class="idref" href="FinSet.Quotients.Retract.html#Build_Retract"><span class="id" title="constructor">l</span></a><br/>
+|}.<br/>
+
+<br/>
+<span class="id" title="keyword">Lemma</span> <a name="ulist_ext"><span class="id" title="lemma">ulist_ext</span></a> <span class="id" title="var">A</span> <span class="id" title="var">R</span> :<br/>
+&nbsp;&nbsp;<span class="id" title="keyword">∀</span> <span class="id" title="var">l₁</span> <span class="id" title="var">l₂</span>:<a class="idref" href="FinSet.Quotients.UList.html#UList"><span class="id" title="definition">UList</span></a> <a class="idref" href="FinSet.Quotients.UList.html#A"><span class="id" title="variable">A</span></a> <a class="idref" href="FinSet.Quotients.UList.html#R"><span class="id" title="variable">R</span></a>, <a class="idref" href="FinSet.Quotients.UList.html#ulist"><span class="id" title="definition">ulist</span></a>.(<a class="idref" href="FinSet.Quotients.Retract.html#inj"><span class="id" title="projection">inj</span></a>) <a class="idref" href="FinSet.Quotients.UList.html#bd90bd35c5146efb8dbc99f8679874fc"><span class="id" title="variable">l₁</span></a> <a class="idref" href="http://coq.inria.fr/distrib/trunk/stdlib/Coq.Init.Logic.html#1c39bf18749e5cc609e83c0a0ba5a372"><span class="id" title="notation">=</span></a> <a class="idref" href="FinSet.Quotients.UList.html#ulist"><span class="id" title="definition">ulist</span></a>.(<a class="idref" href="FinSet.Quotients.Retract.html#inj"><span class="id" title="projection">inj</span></a>) <a class="idref" href="FinSet.Quotients.UList.html#dbcc5286ddb8521153ae1bef9ac87d29"><span class="id" title="variable">l₂</span></a> <a class="idref" href="http://coq.inria.fr/distrib/trunk/stdlib/Coq.Init.Logic.html#d43e996736952df71ebeeae74d10a287"><span class="id" title="notation">→</span></a> <a class="idref" href="FinSet.Quotients.UList.html#bd90bd35c5146efb8dbc99f8679874fc"><span class="id" title="variable">l₁</span></a> <a class="idref" href="http://coq.inria.fr/distrib/trunk/stdlib/Coq.Init.Logic.html#1c39bf18749e5cc609e83c0a0ba5a372"><span class="id" title="notation">=</span></a> <a class="idref" href="FinSet.Quotients.UList.html#dbcc5286ddb8521153ae1bef9ac87d29"><span class="id" title="variable">l₂</span></a>.<br/>
+ 
+<br/>
+<span class="id" title="keyword">Lemma</span> <a name="ulist_nodup"><span class="id" title="lemma">ulist_nodup</span></a> <span class="id" title="var">A</span> <span class="id" title="var">R</span> : <span class="id" title="keyword">∀</span> <span class="id" title="var">l</span>:<a class="idref" href="FinSet.Quotients.UList.html#UList"><span class="id" title="definition">UList</span></a> <a class="idref" href="FinSet.Quotients.UList.html#A"><span class="id" title="variable">A</span></a> <a class="idref" href="FinSet.Quotients.UList.html#R"><span class="id" title="variable">R</span></a>, <a class="idref" href="FinSet.Lib.ListSet.html#nodup"><span class="id" title="definition">nodup</span></a> <a class="idref" href="FinSet.Quotients.UList.html#R"><span class="id" title="variable">R</span></a> (<a class="idref" href="FinSet.Quotients.UList.html#ulist"><span class="id" title="definition">ulist</span></a>.(<a class="idref" href="FinSet.Quotients.Retract.html#inj"><span class="id" title="projection">inj</span></a>) <a class="idref" href="FinSet.Quotients.UList.html#l"><span class="id" title="variable">l</span></a>).<br/>
+
+<br/>
+<span class="id" title="keyword">Lemma</span> <a name="ulist_eq_set"><span class="id" title="lemma">ulist_eq_set</span></a> <span class="id" title="var">A</span> (<span class="id" title="var">R</span>:<a class="idref" href="FinSet.Quotients.UList.html#A"><span class="id" title="variable">A</span></a><a class="idref" href="http://coq.inria.fr/distrib/trunk/stdlib/Coq.Init.Logic.html#d43e996736952df71ebeeae74d10a287"><span class="id" title="notation">→</span></a><a class="idref" href="FinSet.Quotients.UList.html#A"><span class="id" title="variable">A</span></a><a class="idref" href="http://coq.inria.fr/distrib/trunk/stdlib/Coq.Init.Logic.html#d43e996736952df71ebeeae74d10a287"><span class="id" title="notation">→</span></a><a class="idref" href="FinSet.Lib.DProp.html#DProp"><span class="id" title="record">DProp</span></a>) (<span class="id" title="var">e</span>:<a class="idref" href="http://coq.inria.fr/distrib/trunk/stdlib/Coq.Classes.RelationClasses.html#Equivalence"><span class="id" title="class">Equivalence</span></a> <a class="idref" href="FinSet.Quotients.UList.html#R"><span class="id" title="variable">R</span></a>) :<br/>
+&nbsp;&nbsp;<span class="id" title="keyword">∀</span> <span class="id" title="var">l</span>:<a class="idref" href="http://coq.inria.fr/distrib/trunk/stdlib/Coq.Init.Datatypes.html#list"><span class="id" title="inductive">list</span></a> <a class="idref" href="FinSet.Quotients.UList.html#A"><span class="id" title="variable">A</span></a>, <a class="idref" href="FinSet.Lib.ListSet.html#eq_set_list"><span class="id" title="definition">eq_set_list</span></a> <a class="idref" href="FinSet.Quotients.UList.html#R"><span class="id" title="variable">R</span></a> ((<a class="idref" href="FinSet.Quotients.UList.html#ulist"><span class="id" title="definition">ulist</span></a> (<span class="id" title="var">R</span>:=<a class="idref" href="FinSet.Quotients.UList.html#R"><span class="id" title="variable">R</span></a>)).(<a class="idref" href="FinSet.Quotients.Retract.html#inj"><span class="id" title="projection">inj</span></a>) (<a class="idref" href="FinSet.Quotients.UList.html#ulist"><span class="id" title="definition">ulist</span></a>.(<a class="idref" href="FinSet.Quotients.Retract.html#proj"><span class="id" title="projection">proj</span></a>) <a class="idref" href="FinSet.Quotients.UList.html#l"><span class="id" title="variable">l</span></a>)) <a class="idref" href="FinSet.Quotients.UList.html#l"><span class="id" title="variable">l</span></a>.<br/>
+
+<br/>
+</div>
+
+<div class="doc">
+<a name="lab17"></a><h1 class="section">Set equality</h1>
+
+</div>
+<div class="code">
+
+<br/>
+<span class="id" title="keyword">Definition</span> <a name="eq_set_ulist"><span class="id" title="definition">eq_set_ulist</span></a> {<span class="id" title="var">A</span>} <span class="id" title="var">R</span> (<span class="id" title="var">l₁</span> <span class="id" title="var">l₂</span>:<a class="idref" href="FinSet.Quotients.UList.html#UList"><span class="id" title="definition">UList</span></a> <a class="idref" href="FinSet.Quotients.UList.html#A"><span class="id" title="variable">A</span></a> <a class="idref" href="FinSet.Quotients.UList.html#R"><span class="id" title="variable">R</span></a>) : <a class="idref" href="FinSet.Lib.DProp.html#DProp"><span class="id" title="record">DProp</span></a> :=<br/>
+&nbsp;&nbsp;<a class="idref" href="FinSet.Lib.ListSet.html#eq_set_list"><span class="id" title="definition">eq_set_list</span></a> <a class="idref" href="FinSet.Quotients.UList.html#R"><span class="id" title="variable">R</span></a> (<a class="idref" href="FinSet.Quotients.UList.html#ulist"><span class="id" title="definition">ulist</span></a>.(<a class="idref" href="FinSet.Quotients.Retract.html#inj"><span class="id" title="projection">inj</span></a>) <a class="idref" href="FinSet.Quotients.UList.html#bd90bd35c5146efb8dbc99f8679874fc"><span class="id" title="variable">l₁</span></a>) (<a class="idref" href="FinSet.Quotients.UList.html#ulist"><span class="id" title="definition">ulist</span></a>.(<a class="idref" href="FinSet.Quotients.Retract.html#inj"><span class="id" title="projection">inj</span></a>) <a class="idref" href="FinSet.Quotients.UList.html#dbcc5286ddb8521153ae1bef9ac87d29"><span class="id" title="variable">l₂</span></a>).<br/>
+
+<br/>
+<span class="id" title="keyword">Instance</span> <a name="eq_set_eq"><span class="id" title="instance">eq_set_eq</span></a> <span class="id" title="var">A</span> (<span class="id" title="var">R</span>:<a class="idref" href="FinSet.Quotients.UList.html#A"><span class="id" title="variable">A</span></a><a class="idref" href="http://coq.inria.fr/distrib/trunk/stdlib/Coq.Init.Logic.html#d43e996736952df71ebeeae74d10a287"><span class="id" title="notation">→</span></a><a class="idref" href="FinSet.Quotients.UList.html#A"><span class="id" title="variable">A</span></a><a class="idref" href="http://coq.inria.fr/distrib/trunk/stdlib/Coq.Init.Logic.html#d43e996736952df71ebeeae74d10a287"><span class="id" title="notation">→</span></a><a class="idref" href="FinSet.Lib.DProp.html#DProp"><span class="id" title="record">DProp</span></a>) :<br/>
+&nbsp;&nbsp;<a class="idref" href="http://coq.inria.fr/distrib/trunk/stdlib/Coq.Classes.RelationClasses.html#Equivalence"><span class="id" title="class">Equivalence</span></a> <a class="idref" href="FinSet.Quotients.UList.html#R"><span class="id" title="variable">R</span></a> <a class="idref" href="http://coq.inria.fr/distrib/trunk/stdlib/Coq.Init.Logic.html#d43e996736952df71ebeeae74d10a287"><span class="id" title="notation">→</span></a> <a class="idref" href="http://coq.inria.fr/distrib/trunk/stdlib/Coq.Classes.RelationClasses.html#Equivalence"><span class="id" title="class">Equivalence</span></a> (<a class="idref" href="FinSet.Quotients.UList.html#eq_set_ulist"><span class="id" title="definition">eq_set_ulist</span></a> <a class="idref" href="FinSet.Quotients.UList.html#R"><span class="id" title="variable">R</span></a>).<br/>
+
+<br/>
+<span class="id" title="keyword">Instance</span> <a name="ulist_proper"><span class="id" title="instance">ulist_proper</span></a> <span class="id" title="var">A</span> (<span class="id" title="var">R</span>:<a class="idref" href="FinSet.Quotients.UList.html#A"><span class="id" title="variable">A</span></a><a class="idref" href="http://coq.inria.fr/distrib/trunk/stdlib/Coq.Init.Logic.html#d43e996736952df71ebeeae74d10a287"><span class="id" title="notation">→</span></a><a class="idref" href="FinSet.Quotients.UList.html#A"><span class="id" title="variable">A</span></a><a class="idref" href="http://coq.inria.fr/distrib/trunk/stdlib/Coq.Init.Logic.html#d43e996736952df71ebeeae74d10a287"><span class="id" title="notation">→</span></a><a class="idref" href="FinSet.Lib.DProp.html#DProp"><span class="id" title="record">DProp</span></a>) (<span class="id" title="var">e</span>:<a class="idref" href="http://coq.inria.fr/distrib/trunk/stdlib/Coq.Classes.RelationClasses.html#Equivalence"><span class="id" title="class">Equivalence</span></a> <a class="idref" href="FinSet.Quotients.UList.html#R"><span class="id" title="variable">R</span></a>) :<br/>
+&nbsp;&nbsp;<a class="idref" href="http://coq.inria.fr/distrib/trunk/stdlib/Coq.Classes.Morphisms.html#Proper"><span class="id" title="class">Proper</span></a> (<a class="idref" href="FinSet.Quotients.UList.html#eq_set_ulist"><span class="id" title="definition">eq_set_ulist</span></a> <a class="idref" href="FinSet.Quotients.UList.html#R"><span class="id" title="variable">R</span></a> <a class="idref" href="http://coq.inria.fr/distrib/trunk/stdlib/Coq.Classes.Morphisms.html#5bcff5fca4c3a87e683dd8ca07bab63f"><span class="id" title="notation">==&gt;</span></a> <a class="idref" href="FinSet.Lib.ListSet.html#eq_set_list"><span class="id" title="definition">eq_set_list</span></a> <a class="idref" href="FinSet.Quotients.UList.html#R"><span class="id" title="variable">R</span></a>) <a class="idref" href="FinSet.Quotients.UList.html#ulist"><span class="id" title="definition">ulist</span></a>.(<a class="idref" href="FinSet.Quotients.Retract.html#inj"><span class="id" title="projection">inj</span></a>).<br/>
+
+<br/>
+</div>
+
+<div class="doc">
+<a name="lab18"></a><h1 class="section">Instances</h1>
+
+</div>
+<div class="code">
+
+<br/>
+<span class="id" title="keyword">Instance</span> <a name="ulist_countable"><span class="id" title="instance">ulist_countable</span></a> <span class="id" title="var">A</span> <span class="id" title="var">R</span> (<span class="id" title="var">_</span>:<a class="idref" href="FinSet.Quotients.Countable.html#Countable"><span class="id" title="class">Countable</span></a> <a class="idref" href="FinSet.Quotients.UList.html#A"><span class="id" title="variable">A</span></a>) : <a class="idref" href="FinSet.Quotients.Countable.html#Countable"><span class="id" title="class">Countable</span></a> (<a class="idref" href="FinSet.Quotients.UList.html#UList"><span class="id" title="definition">UList</span></a> <a class="idref" href="FinSet.Quotients.UList.html#A"><span class="id" title="variable">A</span></a> <a class="idref" href="FinSet.Quotients.UList.html#R"><span class="id" title="variable">R</span></a>) :=<br/>
+&nbsp;&nbsp;<a class="idref" href="FinSet.Quotients.Countable.html#countable_of_retract"><span class="id" title="definition">countable_of_retract</span></a> <a class="idref" href="FinSet.Quotients.UList.html#ulist"><span class="id" title="definition">ulist</span></a>.<br/>
+
+<br/>
+<span class="id" title="keyword">Instance</span> <a name="ulist_inhabited"><span class="id" title="instance">ulist_inhabited</span></a> <span class="id" title="var">A</span> <span class="id" title="var">R</span> : <a class="idref" href="FinSet.Quotients.Countable.html#Inhabited"><span class="id" title="class">Inhabited</span></a> (<a class="idref" href="FinSet.Quotients.UList.html#UList"><span class="id" title="definition">UList</span></a> <a class="idref" href="FinSet.Quotients.UList.html#A"><span class="id" title="variable">A</span></a> <a class="idref" href="FinSet.Quotients.UList.html#R"><span class="id" title="variable">R</span></a>) := <a class="idref" href="FinSet.Quotients.UList.html#ulist"><span class="id" title="definition">ulist</span></a>.(<a class="idref" href="FinSet.Quotients.Retract.html#proj"><span class="id" title="projection">proj</span></a>) <a class="idref" href="http://coq.inria.fr/distrib/trunk/stdlib/Coq.Init.Datatypes.html#nil"><span class="id" title="constructor">nil</span></a>.<br/>
+</div>
+</div>
+
+<div id="footer">
+<hr/><a href="index.html">Index</a><hr/>This page has been generated by <a href="http://coq.inria.fr/">coqdoc</a>
+</div>
+
+</div>
+
+</body>
+</html>

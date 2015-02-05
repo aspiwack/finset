@@ -19,6 +19,7 @@
 <h1 class="libtitle">Library FinSet.Lib.DProp</h1>
 
 <div class="code">
+<span class="id" title="keyword">Require</span> <a class="idref" href="http://coq.inria.fr/distrib/trunk/stdlib/Coq.Logic.EqdepFacts.html#"><span class="id" title="library">Coq.Logic.EqdepFacts</span></a>.<br/>
 <span class="id" title="keyword">Require</span> <span class="id" title="keyword">Import</span> <a class="idref" href="http://coq.inria.fr/distrib/trunk/stdlib/Coq.Classes.RelationClasses.html#"><span class="id" title="library">Coq.Classes.RelationClasses</span></a>.<br/>
 <span class="id" title="keyword">Require</span> <span class="id" title="keyword">Import</span> <a class="idref" href="http://coq.inria.fr/distrib/trunk/stdlib/Coq.Classes.Morphisms.html#"><span class="id" title="library">Coq.Classes.Morphisms</span></a>.<br/>
 <span class="id" title="keyword">Require</span> <a class="idref" href="http://coq.inria.fr/distrib/trunk/stdlib/Coq.Setoids.Setoid.html#"><span class="id" title="library">Coq.Setoids.Setoid</span></a>.<br/>
@@ -36,7 +37,7 @@
 </div>
 
 <div class="doc">
-<a name="lab27"></a><h1 class="section">Basic properties and tactics</h1>
+<a name="lab31"></a><h1 class="section">Basic properties and tactics</h1>
 
 </div>
 <div class="code">
@@ -80,7 +81,7 @@ This should probably in Coq's <span class="inlinecode"><span class="id" title="v
 </div>
 
 <div class="doc">
-<a name="lab28"></a><h1 class="section">Equality</h1>
+<a name="lab32"></a><h1 class="section">Equality</h1>
 
 <div class="paragraph"> </div>
 
@@ -133,7 +134,7 @@ The rewrite tactics needs some instances defined to work properly
 </div>
 
 <div class="doc">
-<a name="lab29"></a><h1 class="section">Connectives</h1>
+<a name="lab33"></a><h1 class="section">Connectives</h1>
 
 </div>
 <div class="code">
@@ -179,10 +180,19 @@ Notice that <span class="inlinecode"><a class="idref" href="FinSet.Lib.DProp.htm
 <span class="id" title="keyword">Lemma</span> <a name="dnot_spec"><span class="id" title="lemma">dnot_spec</span></a> : <span class="id" title="keyword">∀</span> <span class="id" title="var">A</span>, <a class="idref" href="FinSet.Lib.DProp.html#DNot"><span class="id" title="definition">DNot</span></a> <a class="idref" href="FinSet.Lib.DProp.html#A"><span class="id" title="variable">A</span></a> <a class="idref" href="http://coq.inria.fr/distrib/trunk/stdlib/Coq.Init.Logic.html#df1ced36fc33ce188051218bca314374"><span class="id" title="notation">↔</span></a> <a class="idref" href="http://coq.inria.fr/distrib/trunk/stdlib/Coq.Init.Logic.html#611abc97cba304de784fa909dbdea1fa"><span class="id" title="notation">¬</span></a><a class="idref" href="FinSet.Lib.DProp.html#A"><span class="id" title="variable">A</span></a>.<br/>
 
 <br/>
+<span class="id" title="keyword">Instance</span> <a name="dand_proper"><span class="id" title="instance">dand_proper</span></a> : <a class="idref" href="http://coq.inria.fr/distrib/trunk/stdlib/Coq.Classes.Morphisms.html#Proper"><span class="id" title="class">Proper</span></a> (<a class="idref" href="FinSet.Lib.DProp.html#eq_dprop"><span class="id" title="definition">eq_dprop</span></a> <a class="idref" href="http://coq.inria.fr/distrib/trunk/stdlib/Coq.Classes.Morphisms.html#5bcff5fca4c3a87e683dd8ca07bab63f"><span class="id" title="notation">==&gt;</span></a> <a class="idref" href="FinSet.Lib.DProp.html#eq_dprop"><span class="id" title="definition">eq_dprop</span></a> <a class="idref" href="http://coq.inria.fr/distrib/trunk/stdlib/Coq.Classes.Morphisms.html#5bcff5fca4c3a87e683dd8ca07bab63f"><span class="id" title="notation">==&gt;</span></a> <a class="idref" href="FinSet.Lib.DProp.html#eq_dprop"><span class="id" title="definition">eq_dprop</span></a>) <a class="idref" href="FinSet.Lib.DProp.html#DAnd"><span class="id" title="definition">DAnd</span></a>.<br/>
+
+<br/>
+<span class="id" title="keyword">Instance</span> <a name="dor_proper"><span class="id" title="instance">dor_proper</span></a> : <a class="idref" href="http://coq.inria.fr/distrib/trunk/stdlib/Coq.Classes.Morphisms.html#Proper"><span class="id" title="class">Proper</span></a> (<a class="idref" href="FinSet.Lib.DProp.html#eq_dprop"><span class="id" title="definition">eq_dprop</span></a> <a class="idref" href="http://coq.inria.fr/distrib/trunk/stdlib/Coq.Classes.Morphisms.html#5bcff5fca4c3a87e683dd8ca07bab63f"><span class="id" title="notation">==&gt;</span></a> <a class="idref" href="FinSet.Lib.DProp.html#eq_dprop"><span class="id" title="definition">eq_dprop</span></a> <a class="idref" href="http://coq.inria.fr/distrib/trunk/stdlib/Coq.Classes.Morphisms.html#5bcff5fca4c3a87e683dd8ca07bab63f"><span class="id" title="notation">==&gt;</span></a> <a class="idref" href="FinSet.Lib.DProp.html#eq_dprop"><span class="id" title="definition">eq_dprop</span></a>) <a class="idref" href="FinSet.Lib.DProp.html#DOr"><span class="id" title="definition">DOr</span></a>.<br/>
+
+<br/>
+<span class="id" title="keyword">Instance</span> <a name="dnot_proper"><span class="id" title="instance">dnot_proper</span></a> : <a class="idref" href="http://coq.inria.fr/distrib/trunk/stdlib/Coq.Classes.Morphisms.html#Proper"><span class="id" title="class">Proper</span></a> (<a class="idref" href="FinSet.Lib.DProp.html#eq_dprop"><span class="id" title="definition">eq_dprop</span></a> <a class="idref" href="http://coq.inria.fr/distrib/trunk/stdlib/Coq.Classes.Morphisms.html#5bcff5fca4c3a87e683dd8ca07bab63f"><span class="id" title="notation">==&gt;</span></a> <a class="idref" href="FinSet.Lib.DProp.html#eq_dprop"><span class="id" title="definition">eq_dprop</span></a>) <a class="idref" href="FinSet.Lib.DProp.html#DNot"><span class="id" title="definition">DNot</span></a>.<br/>
+
+<br/>
 </div>
 
 <div class="doc">
-<a name="lab30"></a><h1 class="section">Proof irrelevance</h1>
+<a name="lab34"></a><h1 class="section">Proof irrelevance</h1>
 
 <div class="paragraph"> </div>
 
@@ -203,7 +213,7 @@ Notice that <span class="inlinecode"><a class="idref" href="FinSet.Lib.DProp.htm
 </div>
 
 <div class="doc">
-<a name="lab31"></a><h1 class="section">Booleans</h1>
+<a name="lab35"></a><h1 class="section">Booleans</h1>
 
 <div class="paragraph"> </div>
 
@@ -258,7 +268,20 @@ This proof is a simplified variant of Hedberg's proof of
 </div>
 
 <div class="doc">
-<a name="lab32"></a><h1 class="section">Tactics</h1>
+<a name="lab36"></a><h1 class="section">Subset types</h1>
+
+</div>
+<div class="code">
+
+<br/>
+<span class="id" title="keyword">Lemma</span> <a name="dsigma_ext"><span class="id" title="lemma">dsigma_ext</span></a> <span class="id" title="var">A</span> (<span class="id" title="var">P</span>:<a class="idref" href="FinSet.Lib.DProp.html#A"><span class="id" title="variable">A</span></a><a class="idref" href="http://coq.inria.fr/distrib/trunk/stdlib/Coq.Init.Logic.html#d43e996736952df71ebeeae74d10a287"><span class="id" title="notation">→</span></a><a class="idref" href="FinSet.Lib.DProp.html#DProp"><span class="id" title="record">DProp</span></a>) :<br/>
+&nbsp;&nbsp;<span class="id" title="keyword">∀</span> (<span class="id" title="var">x</span> <span class="id" title="var">y</span>:<a class="idref" href="http://coq.inria.fr/distrib/trunk/stdlib/Coq.Init.Specif.html#72ca3fac4636a1b19c963b12162882cf"><span class="id" title="notation">{</span></a><span class="id" title="var">x</span><a class="idref" href="http://coq.inria.fr/distrib/trunk/stdlib/Coq.Init.Specif.html#72ca3fac4636a1b19c963b12162882cf"><span class="id" title="notation">:</span></a><a class="idref" href="FinSet.Lib.DProp.html#A"><span class="id" title="variable">A</span></a> <a class="idref" href="http://coq.inria.fr/distrib/trunk/stdlib/Coq.Init.Specif.html#72ca3fac4636a1b19c963b12162882cf"><span class="id" title="notation">|</span></a> <a class="idref" href="FinSet.Lib.DProp.html#Canonize"><span class="id" title="definition">Canonize</span></a> (<a class="idref" href="FinSet.Lib.DProp.html#P"><span class="id" title="variable">P</span></a> <span class="id" title="var">x</span>)<a class="idref" href="http://coq.inria.fr/distrib/trunk/stdlib/Coq.Init.Specif.html#72ca3fac4636a1b19c963b12162882cf"><span class="id" title="notation">}</span></a>), <a class="idref" href="http://coq.inria.fr/distrib/trunk/stdlib/Coq.Init.Specif.html#proj1_sig"><span class="id" title="definition">proj1_sig</span></a> <a class="idref" href="FinSet.Lib.DProp.html#x"><span class="id" title="variable">x</span></a> <a class="idref" href="http://coq.inria.fr/distrib/trunk/stdlib/Coq.Init.Logic.html#1c39bf18749e5cc609e83c0a0ba5a372"><span class="id" title="notation">=</span></a> <a class="idref" href="http://coq.inria.fr/distrib/trunk/stdlib/Coq.Init.Specif.html#proj1_sig"><span class="id" title="definition">proj1_sig</span></a> <a class="idref" href="FinSet.Lib.DProp.html#y"><span class="id" title="variable">y</span></a> <a class="idref" href="http://coq.inria.fr/distrib/trunk/stdlib/Coq.Init.Logic.html#d43e996736952df71ebeeae74d10a287"><span class="id" title="notation">→</span></a> <a class="idref" href="FinSet.Lib.DProp.html#x"><span class="id" title="variable">x</span></a> <a class="idref" href="http://coq.inria.fr/distrib/trunk/stdlib/Coq.Init.Logic.html#1c39bf18749e5cc609e83c0a0ba5a372"><span class="id" title="notation">=</span></a> <a class="idref" href="FinSet.Lib.DProp.html#y"><span class="id" title="variable">y</span></a>.<br/>
+
+<br/>
+</div>
+
+<div class="doc">
+<a name="lab37"></a><h1 class="section">Tactics</h1>
 
 <div class="paragraph"> </div>
 
