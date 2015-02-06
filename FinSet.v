@@ -32,7 +32,7 @@ Proof.
   { typeclasses eauto. }
 Qed.
 
-Lemma set_unique A (_:Countable A) :
+Lemma set_nodup A (_:Countable A) :
   forall x, nodup eq_countable (listset.(inj) x).
 Proof.
   intros x. unfold listset,compose. cbn [inj].
