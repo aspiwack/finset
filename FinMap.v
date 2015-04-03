@@ -14,8 +14,15 @@ Require Import FinSet.Quotients.Retract.
 Require Import FinSet.Quotients.Countable.
 Require Import FinSet.FinSet.
 Import FinSet.Notations.
+Require FinSet.Lib.Image.
 
 Module CofinitelyConstant.
+
+ (** The definition of functions as a pair of a [FinSet.T] and a
+     dependently typed list of corresponding size has been suggested
+     by Cyril Cohen. *)
+
+ Import Image.Coercions.
 
  (** Decidably distinguished point in a type. *)
  Record Distinguished (A:Type) := {
@@ -29,196 +36,108 @@ Module CofinitelyConstant.
    dec := Sumbool.sumbool_not _ _ (x.(distinguished) y)
  |}.
 
- Program  Definition T A {_:Countable A} (B:Type) (x:Distinguished B) :=
-   { l:list (A*B) | Canonize (
-                      eq_countable
-                        (List.map fst l) 
-                        (listset.(inj) (listset.(proj) (List.map fst l)))
-                   && ListSet.dforall
-                        (Distinct_from x)
-                        (List.map snd l)
-   )}.
-
- Fixpoint assoc {A} {c:Countable A} {B} (d:B) (x:A) (l:list (A*B)) : B :=
-   match l with
-   | nil => d
-   | cons (a,b) q => if dec (eq_countable x a) then b else assoc d x q
-   end
- .
+ Record T A {C:Countable A} (B:Type) (x:Distinguished B) := {
+   support : FinSet.T A ;
+   range   : Image.T B (listset.(inj) support) ;
+   reduced : Canonize (ListSet.dforall (Distinct_from x) range)
+ }.
+ Arguments range {A C B x} _.
+ Arguments support {A C B x} _.
 
  Definition fun_of {A} {_:Countable A} {B x} (f:T A B x) (a:A) : B :=
-   assoc x.(pt) a (proj1_sig f).
+   Image.assoc eq_countable x.(pt) f.(range) a.
 
  Coercion fun_of : T >-> Funclass.
+
+ Lemma support_spec A (_:Countable A) B x (f:T A B x) :
+   forall a:A, a∈(support f) <-> f a <> x.(pt).
+ Proof.
+   intros a. destruct f as [s img reduced_img]. cbn. unfold mem.
+     rewrite canonize_spec in reduced_img. revert img reduced_img.
+     generalize (listset.(inj) s). clear s. intros l img reduced_img.
+   induction l as [ | a' l hl ].
+   + split.
+     * intros. ListSet.use_no_mem_list_empty.
+     * refine match img with Image.inil => _ end. cbn.
+       congruence.
+   + revert reduced_img hl.
+     refine match img with Image.icons b img' => _ end. cbn [Image.assoc].
+       intros reduced_img hl.
+     destruct dec as [ha'|ha']. all:cbn in ha'.
+     * subst a. clear hl. cbn in reduced_img |- *.
+       split.
+       - now specialize (reduced_img (ListSet.head b)).
+       - intros _.
+         now exists (ListSet.head _).
+     * rewrite <- hl; cycle 1.
+       { cbn in reduced_img |-*. intros m.
+         now specialize (reduced_img (ListSet.tail m)). }
+       split.
+       - cbn. intros [m hm]. revert ha' hm.
+         refine match m with ListSet.head a => _ | ListSet.tail m' => _ end.
+         { cbn. congruence. }
+         intros _ hm. cbn in hm.
+         now exists m'.
+       - cbn. intros [m hm].
+         now exists (ListSet.tail m).
+ Qed.
 
  Lemma ext A (_:Countable A) B x :
    forall f g:T A B x, (forall a, f a = g a) -> f = g.
  Proof.
-   assert (forall (l:list (A*B)) (a:A),
-     ListSet.dforall (Distinct_from x) (List.map snd l) ->
-     Distinct_from x (assoc x.(pt) a l) ->
-     ListSet.mem_list eq_countable a (List.map fst l))
-   as mem_domain.
-   { cbn. intros l.
-     induction l as [ | [a₀ b₀] l hl ].
-     + cbn. congruence.
-     + cbn -[eq_countable]. intros a h₂ hass.
-       destruct dec as [ha|ha].
-       * exists (ListSet.head _).
-         now cbn in ha|-*.
-       * apply hl in hass; cycle 1.
-         { refine (fun m => h₂ (ListSet.tail m)). }
-         destruct hass as [m hm].
-         exists (ListSet.tail m). cbn.
-         trivial. }
-   assert (forall (l:list (A*B)) (m₁:ListSet.Mem (List.map fst l)),
-           exists (m₂:ListSet.Mem (List.map snd l)),
-             ListSet.of_mem m₂ = assoc x.(pt) (ListSet.of_mem m₁) l)
-   as assoc_mem.
-   { fix assoc_mem 2. intros l m.
-     destruct l as [|[a b] l].
-     { cbn in m. ListSet.use_no_mem_empty. }
-     cbn  -[eq_countable] in m|-*.
-     destruct dec as [ha|ha].
-     + now exists (ListSet.head _).
-     + revert ha.
-       refine (match m in ListSet.Mem l' return l' = cons a (List.map fst l) -> _ with | ListSet.head a' => _ | ListSet.tail m' => _ end eq_refl).
-       { cbn. congruence. }
-       intros [= _ ->] _.
-       specialize (assoc_mem _ m').
-       destruct assoc_mem as [m'' hm''].
-       now exists (ListSet.tail m'').
-     Guarded. }
-   assert (forall l₁ l₂:list(A*B),
-     ListSet.dforall (Distinct_from x) (List.map snd l₁) ->
-     (forall a, assoc x.(pt) a l₁ = assoc x.(pt) a l₂) ->
-     ListSet.included_list eq_countable (List.map fst l₁) (List.map fst l₂))
-   as incl_domain.
-   { intros l₁ l₂ nx₁ h. cbn. intros m₁.
-     destruct (dec (Distinct_from x (assoc x.(pt) (ListSet.of_mem m₁) l₁)))
-       as [hm|hm]; cycle 1.
-     { cbn in hm,nx₁.
-       specialize (assoc_mem _ m₁).
-       destruct assoc_mem as [m₁' hm₁].
-       rewrite <- hm₁ in *.
-       congruence. }
-     rewrite h in hm. cbn in hm.
-     revert hm. generalize (ListSet.of_mem m₁). clear l₁ nx₁ h m₁.
-     induction l₂ as [|[a b] l hl].
-     { cbn. congruence. }
-     cbn -[eq_countable]. intros a' h.
-     destruct dec as [->|ha].
-     + now exists (ListSet.head _).
-     + apply hl in h. destruct h as [m hm].
-       now exists (ListSet.tail m). }
-   assert (forall (a:A) (l:list (A*B)),
-             Denies (ListSet.mem_list eq_countable a (List.map fst l)) ->
-             assoc x.(pt) a l = x.(pt))
-   as denies_assoc.
-   { intros a l. induction l as [|[a' b'] l hl].
-     + trivial.
-     + cbn -[eq_countable]. intros h.
-       destruct dec as [c|_].
-       { specialize (h (ListSet.head _)).
-         cbn in *. contradiction. }
-       apply hl. cbn in *.
-       intros m. specialize (h (ListSet.tail m)).
-       exact h. }
-   assert (forall l₁ l₂:list(A*B),
-     ListSet.dforall (Distinct_from x) (List.map snd l₁) ->
-     ListSet.dforall (Distinct_from x) (List.map snd l₂) ->
-     (forall a, assoc x.(pt) a l₁ = assoc x.(pt) a l₂) ->
-     ListSet.eq_set_list eq_countable (List.map fst l₁) (List.map fst l₂))
-   as eq_domain.
-   { intros **. split.
-     all: now apply incl_domain. }
-   assert (forall l₁ l₂:list (A*B),
-             ListSet.nodup eq_countable (List.map fst l₁) ->
-             ListSet.nodup eq_countable (List.map fst l₂) ->
-             ListSet.dforall (Distinct_from x) (List.map snd l₁) ->
-             ListSet.dforall (Distinct_from x) (List.map snd l₂) ->
-             List.map fst l₁ = List.map fst l₂ ->
-             (forall a, assoc x.(pt) a l₁ = assoc x.(pt) a l₂) ->
-             l₁=l₂)
-   as assoc_ext.
-   { intros l₁. induction l₁ as [|[a₁ b₁] l₁ hl₁].
-     + intros [|[a₂ b₂] l₂];cycle 1.
-       { cbn. congruence. }
-       trivial.
-     + intros [|[a₂ b₂] l₂].
-       { cbn. congruence. }
-       cbn -[eq_countable]. intros [h₁ h₂] [h₃ h₄] h₅ h₆ [= <- h₇] h₈.
-       f_equal.
-       { f_equal.
-         specialize (h₈ a₁).
-         destruct dec as [_|n];cycle 1.
-         { cbn in n. congruence. }
-         congruence. }
-       apply hl₁.
-       * assumption.
-       * assumption.
-       * intros m. specialize (h₅ (ListSet.tail m)).
-         trivial.
-       * intros m. specialize (h₆ (ListSet.tail m)).
-         trivial.
-       * assumption.
-       * intros a. specialize (h₈ a).
-         destruct dec as [<-|_].
-         { rewrite !denies_assoc.
-           { trivial. }
-           all:assumption. }
-         trivial. }
-   (* /intermediate lemmas *)
-   (* rearranging goal *)
-   intros [f hf] [g hg] h. cbn in h.
-   apply dsigma_ext. cbn. rewrite !canonize_spec in hf,hg.
-   cbn -[inj proj] in hf,hg.
-   destruct hf as [hf₁ hf₂], hg as [hg₁ hg₂].
-   (* /rearranging goal *)
-   apply assoc_ext.
-   all: try solve[try rewrite hf₁;try rewrite hg₁; auto using set_nodup].
-   rewrite hf₁,hg₁. f_equal.
-   apply set_ext. unfold mem.
-   rewrite <-hf₁, <-hg₁. intros a.
-   apply ListSet.mem_eq_set_list.
-   { typeclasses eauto. }
-   apply eq_domain.
-   all:eauto.
- Qed.
-
- Definition support {A} {_:Countable A} {B x} (f:T A B x) : FinSet.T A :=
-   listset.(proj) (List.map fst (proj1_sig f)).
-
- Lemma mem_support A B x (_:Countable A) : forall f:T A B x,
-   forall y, y∈(support f) <-> f y<>x.(pt).
- Proof.
-   intros [f hf] y. unfold support. unfold fun_of. cbn [proj1_sig].
-   rewrite canonize_spec in hf. destruct hf as [hf₁ hf₂].
-   unfold FinSet.mem. rewrite <- hf₁. clear hf₁.
-   induction f as [|[a b] l hl].
-   + cbn. split.
-     * intros [m _]. ListSet.use_no_mem_empty.
-     * congruence.
-   + cbn -[eq_countable]. destruct dec as [ha|ha].
-     * cbn in hf₂. specialize (hf₂ (ListSet.head b)). cbn in hf₂.
-       split.
-       - trivial.
-       - intros _. exists (ListSet.head a).
-         trivial.
-     * rewrite <- hl; cycle 1.
-       { cbn in hf₂|-*. intros m.
-         now specialize (hf₂ (ListSet.tail m)). }
-       split.
-       - intros [m hm]. revert ha hm.
-         refine match m with
-                | ListSet.head a' => _
-                | ListSet.tail m' => _
-                end.
-         { cbn. congruence. }
-         cbn. intros _ h.
-         eexists. eauto.
-       - intros [m hm].
-         now exists (ListSet.tail m).
+   assert (forall f g : T A B x, (forall a, f a = g a) -> support f ⊆ support g)
+      as incl_support.
+   { unfold subset. intros f g h a ha. cbn.
+     rewrite support_spec in *. congruence. }
+   assert (forall f g : T A B x, (forall a, f a = g a) -> support f = support g)
+      as eq_support.
+   { intros **.
+     apply double_inclusion.
+     all:eauto. }
+   assert (forall (l:list A) (f g:Image.T B l),
+               ListSet.nodup eq_countable l ->
+               ListSet.dforall (Distinct_from x) f ->
+               ListSet.dforall (Distinct_from x) g ->
+               (forall a, Image.assoc eq_countable x.(pt) f a = Image.assoc eq_countable x.(pt) g a) ->
+               f=g) as eq_range.
+   { intros * hl hf hg h.
+     induction l as [|a l ihl].
+     { refine match f with Image.inil => _ end.
+       refine match g with Image.inil => _ end.
+       reflexivity. }
+     revert g hl hf hg h ihl.
+     refine match f with Image.icons b q => _ end. clear. intros g.
+     revert b q.
+     refine match g with Image.icons b' q' => _ end. clear.
+     intros b q hl hf hg h ihl.
+     rewrite ihl with (f:=q) (g:=q').
+     { apply Image.ext. cbn. f_equal.
+       specialize (h a). (* spiwack: I think 'a' is a generated name here *)
+       unfold Image.assoc in h. destruct dec as [_|c];cycle 1.
+       { clear -c. cbn in c. congruence. }
+       assumption. }
+     + clear -hl. cbn in *. tauto.
+     + clear -hf. cbn in *.
+       intros m. specialize (hf (ListSet.tail m)). cbn in hf.
+       assumption.
+     + clear -hg. cbn in *.
+       intros m. specialize (hg (ListSet.tail m)). cbn in hg.
+       assumption.
+     + clear -h hl. intros a'. specialize (h a'). cbn [Image.assoc] in h.
+       destruct dec as [<-|h'].
+       { cbn in hl. transitivity (x.(pt)).
+         all: rewrite Image.assoc_default;[reflexivity|]. all:cbn.
+         all: destruct hl as [_ hl]. all:solve[firstorder]. }
+       assumption. }
+   intros f g h. specialize (eq_support f g h).
+   destruct f as [sf rf rdf], g as [sg rg rdg]. cbn -[ListSet.dforall] in *. destruct eq_support.
+   apply eq_range in h;cycle 1.
+   { apply set_nodup. }
+   { now rewrite canonize_spec in *. }
+   { now rewrite canonize_spec in *. }
+   destruct h.
+   f_equal.
+   apply irrelevant_canonize.
  Qed.
 
 End CofinitelyConstant.
@@ -249,9 +168,9 @@ Module Partial.
  Definition domain {A} {_:Countable A} {B} (f:T A B) : FinSet.T A :=
    CofinitelyConstant.support f.
 
- Lemma mem_domain A B (_:Countable A) : forall f:T A B,
+ Lemma domain_spec A B (_:Countable A) : forall f:T A B,
    forall y, y∈(domain f) <-> f y<>None.
- Proof. apply CofinitelyConstant.mem_support. Qed.
+ Proof. apply CofinitelyConstant.support_spec. Qed.
 
 End Partial.
 
@@ -278,7 +197,7 @@ Module CofinitelyId.
    apply dsigma_ext. cbn. unfold fun_of in *. cbn [proj1_sig] in *.
    rewrite !canonize_spec in *. cbn -[Partial.domain] in hf,hg.
    apply Partial.ext. intros a. specialize (h a).
-   specialize (hf a). specialize (hg a). rewrite Partial.mem_domain in hf,hg.
+   specialize (hf a). specialize (hg a). rewrite Partial.domain_spec in hf,hg.
    destruct Partial.fun_of,Partial.fun_of.
    all: try congruence.
    + destruct hf; congruence.
@@ -288,16 +207,16 @@ Module CofinitelyId.
  Definition support {A} {_:Countable A} (f:T A) : FinSet.T A :=
    Partial.domain (proj1_sig f).
 
- Lemma mem_support A (_:Countable A) : forall f:T A,
+ Lemma support_spec A (_:Countable A) : forall f:T A,
    forall y, y∈(support f) <-> f y<>y.
  Proof.
    intros [f hf] y. unfold support,fun_of. cbn -[Partial.domain].
    rewrite canonize_spec in hf. cbn -[Partial.domain] in hf.
    specialize (hf y).
    split.
-   + intros hy. specialize (hf hy). rewrite Partial.mem_domain in hy.
+   + intros hy. specialize (hf hy). rewrite Partial.domain_spec in hy.
      destruct Partial.fun_of. all:congruence.
-   + rewrite Partial.mem_domain.
+   + rewrite Partial.domain_spec.
      destruct Partial.fun_of. all:congruence.
  Qed.
 

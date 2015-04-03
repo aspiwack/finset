@@ -22,6 +22,7 @@ Proof. typeclasses eauto. Defined.
 
 Definition listset {A} {_:Countable A} : Retract (list A) (T A) :=
   Retract.compose ulist (quotient (eq_set_ulist eq_countable)).
+Arguments listset : simpl never.
 
 Lemma set_quotient A (_:Countable A) : forall x,
   eq_set_list eq_countable (listset.(inj) (listset.(proj) x)) x.
