@@ -14,7 +14,7 @@ Record Retract A B := {
 Arguments inj  {A B} _ _.
 Arguments proj {A B} _ _.
 
-Obligation Tactic := try solve [intuition eauto|intros **;now rewrite !retract].
+Obligation Tactic := try solve [intuition eauto|intros **;cbn;now rewrite !retract].
 
 (** * Categorical combinators *)
 
